@@ -1,0 +1,86 @@
+{
+  "GBWZ": {
+    "PROJECT_NAME": "GBWZ",
+    "PROJECT_PATH": "Z:/WORK_ROOT",
+    "SHOT_CACHE": "/ShotCache",
+
+    "ASSETS": {
+      "TEX_ASSET_MAYA": "/TexAssets/MayaTex",
+      "TEX_ASSET_ABC": "/TexAssets/MaterialX",
+      "TEX_ASSET_USD": "/TexAssets/USDAssets",
+      "TEX_ASSET_TEX": "/TexAssets/Textures",
+
+      "RIG_ASSET_MAYA": "/RigAssets/MayaRig",
+      "RIG_ASSET_TEX": "/RigAssets/Textures",
+
+      "HAIR_ASSET_MAYA": "/HairAssets/MayaHair",
+      "HAIR_ASSET_TEX": "/HairAssets/Textures",
+      "HAIR_ASSET_MAT": "/HairAssets/MaterialX"
+    },
+
+    "ASSET_TABEL": {
+      "CHR": {
+        "chr_libai1005": { "rig": 1 },
+        "chr_gongbeng2005": { "rig": 1 }
+      },
+      "PROP": {
+        "chr_libai1005": { "rig": 1 },
+        "chr_gongbeng2005": { "rig": 1 }
+      },
+      "ELE": {
+        "chr_libai1005": { "rig": 0 },
+        "chr_gongbeng2005": { "rig": 0 }
+      },
+      "SET": {
+        "chr_libai1005": { "rig": 0 },
+        "chr_gongbeng2005": { "rig": 0 }
+      }
+
+    },
+
+    "SHOT_TABEL": {
+      "SC01": {
+        "Shot001": {
+          "start": 1001,
+          "end": 1020
+        },
+        "Shot002": {
+          "start": 1001,
+          "end": 1020
+        },
+        "Shot003": {
+          "start": 1001,
+          "end": 1020
+        }
+      },
+      "SC02": {
+        "Shot001": {
+          "start": 1001,
+          "end": 1021
+        },
+        "Shot002": {
+          "start": 1001,
+          "end": 1030
+        },
+        "Shot003": {
+          "start": 1001,
+          "end": 1022
+        }
+      },
+      "SC03": {
+        "Shot001": {
+          "start": 1001,
+          "end": 1021
+        },
+        "Shot002": {
+          "start": 1001,
+          "end": 1030
+        },
+        "Shot003": {
+          "start": 1001,
+          "end": 1022
+        }
+      }
+    }
+  }
+}

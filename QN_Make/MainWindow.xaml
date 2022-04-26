@@ -1,0 +1,60 @@
+﻿<Window x:Name="QNMakeTX" x:Class="QN_Make.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QN_Make"
+        mc:Ignorable="d"
+        Title="千鸟TX转换" Height="450" Width="800" Background="White">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="101*"/>
+            <RowDefinition Height="144*"/>
+            <RowDefinition Height="154*"/>
+            <RowDefinition Height="20*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="461*"/>
+            <ColumnDefinition Width="331*"/>
+        </Grid.ColumnDefinitions>
+        <ListBox x:Name="listBox" Grid.RowSpan="3" Margin="23,10,0,0" SelectionChanged="sel_changed_lb"/>
+        <GroupBox x:Name="groupBox" Grid.Column="1" Header="输入设置" HorizontalAlignment="Left" Height="124" Margin="19,10,0,0" VerticalAlignment="Top" Width="283" Grid.Row="1">
+            <Grid Margin="0,0,-2,-12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="83*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="13*"/>
+                    <RowDefinition Height="14*"/>
+                    <RowDefinition Height="11*"/>
+                </Grid.RowDefinitions>
+                <ComboBox x:Name="colorspace" Margin="30,10,10,8" RenderTransformOrigin="0.5,0.5" Grid.Column="1" SelectedIndex="0" SelectionChanged="colorspaceChange">
+                    <ComboBoxItem Content="Utility - sRGB - Texture " HorizontalAlignment="Left" Width="148" Margin="0,0,-2,0"/>
+                    <ComboBoxItem Content="Utility - RAW" HorizontalAlignment="Left" Width="146"/>
+                    <ComboBoxItem Content="Utility - Linear - sRGB" HorizontalAlignment="Left" Width="146"/>
+                </ComboBox>
+                <Label x:Name="label" Content="输入颜色空间" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="9" Margin="22,10,0,0" Height="21" RenderTransformOrigin="0.5,0.5" Width="64" Grid.ColumnSpan="2"/>
+                <Label x:Name="label2" Content="输出格式" Margin="27,11,196,9" Grid.ColumnSpan="2" RenderTransformOrigin="0.467,0.72" Grid.Row="1" FontSize="9"/>
+                <ComboBox x:Name="fileformat" Grid.Row="1" Grid.Column="1" Margin="30,11,10,11" VerticalAlignment="Center" SelectedIndex="0" Height="20" SelectionChanged="formatChange">
+                    <ComboBoxItem Content="tx" HorizontalAlignment="Left" Width="168"/>
+                    <ComboBoxItem Content="exr" HorizontalAlignment="Left" Width="168"/>
+                </ComboBox>
+                <Button x:Name="allchange" Content="exr/tx" Grid.Column="1" HorizontalAlignment="Left" Margin="170,39,0,0" Grid.Row="1" VerticalAlignment="Top" Width="30" Foreground="#FFB4B4B4" BorderBrush="{x:Null}" Background="#FFA2A2A2" Grid.RowSpan="2" FontSize="8" Click="swithTxEXR"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox x:Name="groupBox1" Header="导入文件" HorizontalAlignment="Left" Height="71" VerticalAlignment="Top" Width="293" Grid.Column="1" Margin="19,20,0,0">
+            <Grid Margin="0,0,-2,-12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="83*"/>
+                    <ColumnDefinition Width="241*"/>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="label1" Content="文件夹路径" Margin="20,14,192,19" FontSize="9" Grid.ColumnSpan="2"/>
+                <TextBox x:Name="textBox" TextWrapping="Wrap" Text="TextBox" Margin="24,15,22,23" Grid.Column="1" MouseDoubleClick="button_Click" TextChanged="changedText"/>
+            </Grid>
+        </GroupBox>
+        <Button x:Name="runTask" Content="运行任务" Grid.Column="1" Grid.Row="2" BorderBrush="{x:Null}" Background="#FFDEDEDE" Margin="19,31,29,10" Click="runTaskClick"/>
+        <Label x:Name="info" Content="信息：" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="3" Grid.ColumnSpan="2" Width="792" FontSize="8"/>
+
+    </Grid>
+</Window>

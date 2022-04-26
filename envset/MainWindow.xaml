@@ -1,0 +1,27 @@
+﻿<Window x:Class="envset.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:envset"
+        mc:Ignorable="d"
+        Title="QN环境设置" Height="238.599" Width="739.423">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="111*"/>
+            <RowDefinition Height="97*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="95*"/>
+            <ColumnDefinition Width="440*"/>
+            <ColumnDefinition Width="196*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="textBox" Margin="20,42,10,35" TextWrapping="Wrap" Text="D:/WORK" FontSize="24" Grid.Column="1" MouseDoubleClick="doubleclick_projectroot"/>
+        <Button x:Name="button" Content="确认" Grid.Column="2" Margin="52,42,25,39" FontSize="20" Click="button_Click" Grid.RowSpan="2"/>
+        <TextBox x:Name="textBox1" Grid.Column="1" HorizontalAlignment="Left" Height="41" Margin="20,33,0,0" Grid.Row="1" TextWrapping="Wrap" Text="C:/aces_1.2/config.ocio" VerticalAlignment="Top" Width="410" FontSize="24" MouseDoubleClick="doubleclick_ocio"/>
+        <Label x:Name="label" Content="工程路径" HorizontalAlignment="Left" Margin="32,42,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label1" Content="OCIO" HorizontalAlignment="Left" Margin="32,34,0,0" Grid.Row="1" VerticalAlignment="Top" Width="53"/>
+        <Separator Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="430,-83,0,0" VerticalAlignment="Top" Width="100"/>
+
+    </Grid>
+</Window>

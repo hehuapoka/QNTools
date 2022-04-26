@@ -1,0 +1,27 @@
+﻿<Window x:Class="QNSyncApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QNSyncApp"
+        mc:Ignorable="d"
+        Title="资产同步" Height="450" Width="800" Icon="sync.png">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="127*"/>
+            <ColumnDefinition Width="665*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <Frame x:Name="mainframe" Grid.ColumnSpan="2" NavigationUIVisibility="Hidden"></Frame>
+        <Button Grid.Row="1" Content="运行" BorderThickness="0" Grid.ColumnSpan="2" Click="SyncTask" Background="AliceBlue"/>
+
+        <DockPanel LastChildFill="False" >
+            <Button DockPanel.Dock="Left" Width="20" Height="100" Content="资&#x000A;产&#x000A;--&#x000A;镜&#x000A;头&#x000A;" Click="switchPage" Background="CadetBlue"/>
+        </DockPanel>
+    </Grid>
+</Window>
