@@ -17,6 +17,11 @@ namespace QNSyncServerGUI
             get;
             set;
         }
+        public string Label
+        {
+            get;
+            set;
+        }
         public bool Sync
         {
             get;
@@ -129,7 +134,8 @@ namespace QNSyncServerGUI
         {
             if (!File.Exists("config.json"))
                 return;
-            dynamic a = JsonConvert.DeserializeObject(File.ReadAllText("config.json"));
+
+            dynamic a = JsonConvert.DeserializeObject(File.ReadAllText("config.json",Encoding.Default));
             foreach(dynamic pr in a)
             {
                 ConfigData project = new ConfigData(pr.Name);
@@ -154,6 +160,7 @@ namespace QNSyncServerGUI
                         Name = asset.Name,
                         Sync = false,
                         Path = asset.Value.Property("PATH").Value.ToString(),
+                        Label = asset.Value.Property("LABEL").Value.ToString(),
                         Format = formats.ToArray()
                     };//Path= asset.Value.ToString()
 

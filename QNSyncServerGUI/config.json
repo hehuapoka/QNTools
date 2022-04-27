@@ -7,40 +7,49 @@
 
     "ASSETS": {
       "TEX_ASSET_MAYA": {
+        "LABEL": "MAYA资产",
         "PATH": "TexAssets/MayaTex",
         "FORMAT": [ ".ma", ".mb" ]
       },
       "TEX_ASSET_ABC": {
+        "LABEL": "ABC资产",
         "PATH": "TexAssets/MaterialX",
         "FORMAT": [ ".abc", ".ass" ]
       },
       "TEX_ASSET_USD": {
+        "LABEL": "USD资产",
         "PATH": "TexAssets/USDAssets",
         "FORMAT": [ ".usd", ".usda" ]
       },
       "TEX_ASSET_TEX": {
+        "LABEL": "TEX资产",
         "PATH": "TexAssets/Textures",
         "FORMAT": [ ".tx" ]
       },
 
       "RIG_ASSET_MAYA": {
+        "LABEL": "MAYA资产",
         "PATH": "RigAssets/MayaRig",
         "FORMAT": [ ".ma", ".mb" ]
       },
       "RIG_ASSET_TEX": {
+        "LABEL": "TEX资产",
         "PATH": "RigAssets/Textures",
         "FORMAT": [ ".tx", ".png" ]
       },
 
       "HAIR_ASSET_MAYA": {
+        "LABEL": "MAYA资产",
         "PATH": "HairAssets/MayaHair",
         "FORMAT": [ ".ma", ".mb" ]
       },
       "HAIR_ASSET_TEX": {
+        "LABEL": "TEX资产",
         "PATH": "HairAssets/Textures",
         "FORMAT": [ ".tx" ]
       },
       "HAIR_ASSET_MAT": {
+        "LABEL": "MAT资产",
         "PATH": "HairAssets/Operator",
         "FORMAT": [ ".ass" ]
       }

@@ -42,8 +42,8 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <UniformGrid Columns="2">
-                                    <Label Content="{Binding Name}" FontSize="10"/>
-                                    <CheckBox IsChecked="{Binding Sync}" HorizontalAlignment="Right" />
+                                    <CheckBox IsChecked="{Binding Sync}"/>
+                                    <Label Content="{Binding Label}" FontSize="10" HorizontalAlignment="Left" HorizontalContentAlignment="Left"/>
                                 </UniformGrid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -53,8 +53,8 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <UniformGrid Columns="2">
-                                    <Label Content="{Binding Name}" FontSize="10"/>
-                                    <CheckBox IsChecked="{Binding Sync}" HorizontalAlignment="Right" />
+                                    <CheckBox IsChecked="{Binding Sync}"/>
+                                    <Label Content="{Binding Label}" FontSize="10" HorizontalAlignment="Left" HorizontalContentAlignment="Left"/>
                                 </UniformGrid>
 
                             </DataTemplate>
@@ -65,8 +65,8 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <UniformGrid Columns="2">
-                                    <Label Content="{Binding Name}" FontSize="10"/>
-                                    <CheckBox IsChecked="{Binding Sync}" HorizontalAlignment="Right" />
+                                    <CheckBox IsChecked="{Binding Sync}"/>
+                                    <Label Content="{Binding Label}" FontSize="10" HorizontalAlignment="Left" HorizontalContentAlignment="Left"/>
                                 </UniformGrid>
 
                             </DataTemplate>
