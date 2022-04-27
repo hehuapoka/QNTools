@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QNSyncServerGUI"
         mc:Ignorable="d"
-        Title="资产同步" Height="450" Width="800" Icon="sync.png">
+        Title="资产同步" Height="450" Width="800" Icon="sync.png" StateChanged="Window_StateChanged" Closing="close_Window">
     <Grid>
         <TabControl x:Name="tabControl" BorderThickness="0" >
             <TabItem Header="资产" BorderThickness="0">

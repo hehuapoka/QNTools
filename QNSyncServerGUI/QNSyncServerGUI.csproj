@@ -147,7 +147,9 @@
     <Resource Include="Images\shot.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="sync.ico" />
+    <Resource Include="sync.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

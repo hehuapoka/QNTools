@@ -21,6 +21,8 @@ namespace QNSyncServerGUI
     public partial class MainWindow : Window
     {
         ProjectAll project_all;
+        System.Windows.Forms.NotifyIcon notifyIcon;
+        System.Windows.Forms.MenuItem[] menuItems;
         public MainWindow()
         {
             InitializeComponent();
@@ -30,6 +32,49 @@ namespace QNSyncServerGUI
             this.cureen_project.ItemsSource = project_all.project_list;
 
             changeProject(0);
+            icon();
+        }
+
+        private void icon()
+        {
+            System.Windows.Forms.MenuItem open_item = new System.Windows.Forms.MenuItem("打开主页面");
+            open_item.Click += new EventHandler((o, e) => { this.WindowState=WindowState.Normal;this.Show(); });
+
+            System.Windows.Forms.MenuItem sync_item = new System.Windows.Forms.MenuItem("同步");
+
+            System.Windows.Forms.MenuItem close_item = new System.Windows.Forms.MenuItem("退出");
+            close_item.Click += new EventHandler((o, e) => { this.Close(); });
+
+            menuItems = new System.Windows.Forms.MenuItem[] { open_item, sync_item, close_item };
+
+
+            notifyIcon = new System.Windows.Forms.NotifyIcon();
+            notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(menuItems);
+            notifyIcon.BalloonTipText = "千鸟文件同步启动";
+            notifyIcon.Text = "千鸟文件同步";
+            notifyIcon.Icon = new System.Drawing.Icon("sync.ico");
+            notifyIcon.Visible = true;
+            notifyIcon.DoubleClick += OnNotifyIconDoubleClick;
+            notifyIcon.ShowBalloonTip(1000);
+
+
+        }
+        private void OnNotifyIconDoubleClick(object sender, EventArgs e)
+        {
+            this.WindowState = WindowState.Normal;
+            this.Show();
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == WindowState.Minimized)
+            {
+                this.Hide();
+
+                notifyIcon.BalloonTipText = "千鸟文件同步最小化";
+                notifyIcon.ShowBalloonTip(1000);
+
+            }
         }
 
         private void cureen_project_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -87,6 +132,17 @@ namespace QNSyncServerGUI
                     i.SyncVFX = item.SyncVFX;
                 }
             }
+        }
+
+        private void close_Window(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MessageBoxResult a = MessageBox.Show("你需要最小化窗口吗？", "关闭提示", MessageBoxButton.YesNo);
+            if(a == MessageBoxResult.Yes)
+            {
+                WindowState = WindowState.Minimized;
+                e.Cancel = true;   
+            }
+                
         }
     }
 }
