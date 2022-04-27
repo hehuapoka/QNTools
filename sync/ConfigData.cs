@@ -27,6 +27,11 @@ namespace sync
             get;
             set;
         }
+        public string[] Format
+        {
+            get;
+            set;
+        }
     }
     public class ShotTreeItem
     {
@@ -71,10 +76,16 @@ namespace sync
     {
         public string Name { get; }
         public string ProjectPath { get; set; }
+        public string ProjectMapDrive { get; set; }
+        public string ShotCache { get; set; }
+
+
         public bool Sync { get; set; }
         public double Day { get; set; }
         public double Hours { get; set; }
         public double Mintus { get; set; }
+
+
         public List<ItemSingle> TexAsset { get; set; }
 
         public List<ItemSingle> RigAsset { get; set; }
@@ -93,6 +104,8 @@ namespace sync
     }
     public class ProjectAll
     {
+        private static string[] cache_type_name = { "Anims", "CFX", "VFX" };
+
         public List<ConfigData> project_list;
         public ProjectAll()
         {
@@ -104,14 +117,23 @@ namespace sync
         {
             project_list = JsonConvert.DeserializeObject<List<ConfigData>>(File.ReadAllText("app_config.json"));
         }
-        //public string GetLocalPath(string name,string path)
-        //{
-        //    return "";
-        //}
-        //public string GetServerPath(string name,string path)
-        //{
-        //    return "";
-        //}
+        public static string GetServerPath(ConfigData proj,string path)
+        {
+            return Path.Combine(proj.ProjectPath.Replace("/","\\"),path.Replace("/","\\"));
+        }
+        public static string GetLocalPath(ConfigData proj, string path)
+        {
+            return Path.Combine(proj.ProjectMapDrive,proj.Name.Replace("/", "\\"), path.Replace("/", "\\"));
+        }
+
+        public static string GetServerCachePath(ConfigData proj, string sc,string shot,int type)
+        {
+            return Path.Combine(proj.ProjectPath.Replace("/", "\\"), proj.ShotCache.Replace("/","\\"),sc,shot,cache_type_name[type]);
+        }
+        public static string GetLocalCachePath(ConfigData proj, string sc, string shot, int type)
+        {
+            return Path.Combine(proj.ProjectMapDrive.Replace("/", "\\"), proj.Name.Replace("/", "\\"), proj.ShotCache.Replace("/", "\\"), sc, shot, cache_type_name[type]);
+        }
 
     }
 }

@@ -97,9 +97,9 @@
                     </TreeView>
                     <GroupBox Grid.Column="1" Header="同步项" Height="100" VerticalAlignment="Center">
                         <StackPanel Orientation="Vertical">
-                            <CheckBox x:Name="anims" IsChecked="{Binding Path=SelectedItem.SyncAnims, ElementName=shotview}">ANIMS</CheckBox>
-                            <CheckBox x:Name="cfx" IsChecked="{Binding Path=SelectedItem.SyncCFX, ElementName=shotview}">CFX</CheckBox>
-                            <CheckBox x:Name="vfx" IsChecked="{Binding Path=SelectedItem.SyncVFX, ElementName=shotview}">VFX</CheckBox>
+                            <CheckBox x:Name="anims" IsChecked="{Binding Path=SelectedItem.SyncAnims, ElementName=shotview}" Click="anims_Click">ANIMS</CheckBox>
+                            <CheckBox x:Name="cfx" IsChecked="{Binding Path=SelectedItem.SyncCFX, ElementName=shotview}" Checked="cfx_Checked">CFX</CheckBox>
+                            <CheckBox x:Name="vfx" IsChecked="{Binding Path=SelectedItem.SyncVFX, ElementName=shotview}" Checked="vfx_Checked">VFX</CheckBox>
                         </StackPanel>
                     </GroupBox>
 

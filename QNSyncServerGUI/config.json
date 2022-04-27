@@ -2,20 +2,48 @@
   "GBWZ": {
     "PROJECT_NAME": "GBWZ",
     "PROJECT_PATH": "Z:/WORK_ROOT",
-    "SHOT_CACHE": "/ShotCache",
+    "PROJECT_MAP_DRIVE": "P:",
+    "SHOT_CACHE": "ShotCache",
 
     "ASSETS": {
-      "TEX_ASSET_MAYA": "/TexAssets/MayaTex",
-      "TEX_ASSET_ABC": "/TexAssets/MaterialX",
-      "TEX_ASSET_USD": "/TexAssets/USDAssets",
-      "TEX_ASSET_TEX": "/TexAssets/Textures",
+      "TEX_ASSET_MAYA": {
+        "PATH": "TexAssets/MayaTex",
+        "FORMAT": [ ".ma", ".mb" ]
+      },
+      "TEX_ASSET_ABC": {
+        "PATH": "TexAssets/MaterialX",
+        "FORMAT": [ ".abc", ".ass" ]
+      },
+      "TEX_ASSET_USD": {
+        "PATH": "TexAssets/USDAssets",
+        "FORMAT": [ ".usd", ".usda" ]
+      },
+      "TEX_ASSET_TEX": {
+        "PATH": "TexAssets/Textures",
+        "FORMAT": [ ".tx" ]
+      },
 
-      "RIG_ASSET_MAYA": "/RigAssets/MayaRig",
-      "RIG_ASSET_TEX": "/RigAssets/Textures",
+      "RIG_ASSET_MAYA": {
+        "PATH": "RigAssets/MayaRig",
+        "FORMAT": [ ".ma", ".mb" ]
+      },
+      "RIG_ASSET_TEX": {
+        "PATH": "RigAssets/Textures",
+        "FORMAT": [ ".tx", ".png" ]
+      },
 
-      "HAIR_ASSET_MAYA": "/HairAssets/MayaHair",
-      "HAIR_ASSET_TEX": "/HairAssets/Textures",
-      "HAIR_ASSET_MAT": "/HairAssets/MaterialX"
+      "HAIR_ASSET_MAYA": {
+        "PATH": "HairAssets/MayaHair",
+        "FORMAT": [ ".ma", ".mb" ]
+      },
+      "HAIR_ASSET_TEX": {
+        "PATH": "HairAssets/Textures",
+        "FORMAT": [ ".tx" ]
+      },
+      "HAIR_ASSET_MAT": {
+        "PATH": "HairAssets/Operator",
+        "FORMAT": [ ".ass" ]
+      }
     },
 
     "ASSET_TABEL": {

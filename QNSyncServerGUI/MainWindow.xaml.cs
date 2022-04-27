@@ -26,6 +26,7 @@ namespace QNSyncServerGUI
             InitializeComponent();
 
             project_all = new ProjectAll();
+
             this.cureen_project.ItemsSource = project_all.project_list;
 
             changeProject(0);
@@ -50,6 +51,42 @@ namespace QNSyncServerGUI
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             project_all.WriteConfig();
+        }
+
+        private void anims_Click(object sender, RoutedEventArgs e)
+        {
+            ShotTreeItem item = (ShotTreeItem)shotview.SelectedItem;
+            if("ShotTreeItem".Equals(item.GetType().Name))
+            {
+                foreach(ShotTreeItem i in item.Children)
+                {
+                    i.SyncAnims = item.SyncAnims;
+                }
+            }
+        }
+
+        private void cfx_Checked(object sender, RoutedEventArgs e)
+        {
+            ShotTreeItem item = (ShotTreeItem)shotview.SelectedItem;
+            if ("ShotTreeItem".Equals(item.GetType().Name))
+            {
+                foreach (ShotTreeItem i in item.Children)
+                {
+                    i.SyncCFX = item.SyncCFX;
+                }
+            }
+        }
+
+        private void vfx_Checked(object sender, RoutedEventArgs e)
+        {
+            ShotTreeItem item = (ShotTreeItem)shotview.SelectedItem;
+            if ("ShotTreeItem".Equals(item.GetType().Name))
+            {
+                foreach (ShotTreeItem i in item.Children)
+                {
+                    i.SyncVFX = item.SyncVFX;
+                }
+            }
         }
     }
 }

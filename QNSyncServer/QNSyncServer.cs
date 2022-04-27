@@ -8,9 +8,12 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Threading;
+using System.IO;
 
 namespace QNSyncServer
 {
+
     public partial class QNSyncServer : ServiceBase
     {
         private System.Timers.Timer timer1;
@@ -27,25 +30,32 @@ namespace QNSyncServer
             eventLog1.Source = "QNSyncSource";
             eventLog1.Log = "QNSyncLog";
 
-            timer1 = new Timer();
-            timer1.Interval = 6000;
+            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
+
+            timer1 = new System.Timers.Timer();
+            timer1.Interval = 1000*60;
             timer1.Elapsed += new ElapsedEventHandler(this.OnTimer);
             timer1.Start();
         }
 
+
         protected override void OnStart(string[] args)
         {
-            eventLog1.WriteEntry("Server is starting");
+            
+            eventLog1.WriteEntry($"开始服务...{File.Exists("app_config.json")}");
+            Sync.Run();
+
         }
 
         protected override void OnStop()
         {
-            eventLog1.WriteEntry("Server is Stop");
+            eventLog1.WriteEntry("同步服务停止");
         }
 
         public void OnTimer(object sender, System.Timers.ElapsedEventArgs args)
         {
-            eventLog1.WriteEntry("Monitoring the System", EventLogEntryType.Information, eventId++);
+            eventLog1.WriteEntry($"同步次数{eventId++}");
+            Sync.Run();
         }
     }
 }
