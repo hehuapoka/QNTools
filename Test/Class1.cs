@@ -41,18 +41,21 @@ namespace Test
             {
                 a.SetValue(name, "",RegistryValueKind.String);
             }
-            if(ac)
+            if (ac)
                 a.SetValue(name, value, RegistryValueKind.String);
             else
-                a.SetValue(name, "", RegistryValueKind.String);
+                a.DeleteValue(name);
 
-            Console.WriteLine(a.GetValue(name).ToString());
+            a.Close();
+
+            Console.WriteLine("环境变量设置完成!");
 
 
         }
         static void Main(string[] args)
         {
-            AutoStartSync(true,"hello world");
+
+            AutoStartSync(true,$"\"{System.IO.Path.Combine(Directory.GetCurrentDirectory(), "QNSyncServerGUI.exe")}\" --cmd=autorun");
             Console.ReadKey();
 
         }

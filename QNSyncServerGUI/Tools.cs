@@ -28,7 +28,7 @@ namespace QNSyncServerGUI
                 a.SetValue(name, "", RegistryValueKind.String);
             }
             if (ac)
-                a.SetValue(name, System.IO.Path.Combine(value, "QNSyncServerGUI.exe"), RegistryValueKind.String);
+                a.SetValue(name, $"\"{System.IO.Path.Combine(value, "QNSyncServerGUI.exe")}\" --cmd=autorun", RegistryValueKind.String);
             else
                 a.SetValue(name, "", RegistryValueKind.String);
 

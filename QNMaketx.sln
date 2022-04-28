@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "envset", "envset\envset.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MayaAnimaExportTools", "MayaAnimaExportTools\MayaAnimaExportTools.csproj", "{D9C00CF5-5A1E-441B-9291-BC278BC88849}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{5FD372D2-3020-4E55-96E9-ED997F3C07B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "install", "Test\install.csproj", "{5FD372D2-3020-4E55-96E9-ED997F3C07B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QNAssetView", "QNAssetView\QNAssetView.csproj", "{04513F62-B58A-4F97-A89A-7C153914EAF7}"
 EndProject

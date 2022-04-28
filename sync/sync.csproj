@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartupObject>sync.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

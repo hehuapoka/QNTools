@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QNSyncServerGUI"
         mc:Ignorable="d"
-        Title="资产同步" Height="450" Width="800" Icon="sync.png" StateChanged="Window_StateChanged" Closing="close_Window" Activated="windows_Activated">
+        Title="资产同步" Height="450" Width="800" Icon="sync.png" StateChanged="Window_StateChanged" Closing="close_Window">
     <Grid>
         <TabControl x:Name="tabControl" BorderThickness="0" >
             <TabItem Header="资产" BorderThickness="0" Width="100" Height="30" Background="AliceBlue">
@@ -149,8 +149,8 @@
                     
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <CheckBox x:Name="autoUpdata" Content="自动更新" HorizontalAlignment="Center" IsChecked="True"/>
-                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
-                        <CheckBox x:Name="selfStart" Content="自启动" HorizontalAlignment="Center" IsChecked="True" Checked="selfStart_Checked"/>
+                        <!--<Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+                        <CheckBox x:Name="selfStart" Content="自启动" HorizontalAlignment="Center" IsChecked="True" Checked="selfStart_Checked"/>-->
                     </StackPanel>
 
                     <Separator Opacity="0.2" Margin="10"/>

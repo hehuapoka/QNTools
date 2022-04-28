@@ -245,18 +245,5 @@ namespace QNSyncServerGUI
             }
                 
         }
-
-        private void windows_Activated(object sender, EventArgs e)
-        {
-            if((bool)selfStart.IsChecked)
-            {
-                Tools.AutoStartSync((bool)selfStart.IsChecked, System.IO.Directory.GetCurrentDirectory());
-            }
-        }
-
-        private void selfStart_Checked(object sender, RoutedEventArgs e)
-        {
-            Tools.AutoStartSync((bool)selfStart.IsChecked, System.IO.Directory.GetCurrentDirectory());
-        }
     }
 }
