@@ -109,6 +109,8 @@ namespace QNSyncServerGUI
     }
     public class ProjectAll
     {
+        private static string[] cache_type_name = { "Anims", "CFX", "VFX" };
+
         public List<ConfigData> project_list;
         public ProjectAll()
         {
@@ -209,6 +211,24 @@ namespace QNSyncServerGUI
         public void ReadConfig()
         {
             project_list = JsonConvert.DeserializeObject<List<ConfigData>>(File.ReadAllText("app_config.json"));
+        }
+
+        public static string GetServerPath(ConfigData proj, string path)
+        {
+            return Path.Combine(proj.ProjectPath.Replace("/", "\\"), path.Replace("/", "\\"));
+        }
+        public static string GetLocalPath(ConfigData proj, string path)
+        {
+            return Path.Combine(proj.ProjectMapDrive, proj.Name.Replace("/", "\\"), path.Replace("/", "\\"));
+        }
+
+        public static string GetServerCachePath(ConfigData proj, string sc, string shot, int type)
+        {
+            return Path.Combine(proj.ProjectPath.Replace("/", "\\"), proj.ShotCache.Replace("/", "\\"), sc, shot, cache_type_name[type]);
+        }
+        public static string GetLocalCachePath(ConfigData proj, string sc, string shot, int type)
+        {
+            return Path.Combine(proj.ProjectMapDrive.Replace("/", "\\"), proj.Name.Replace("/", "\\"), proj.ShotCache.Replace("/", "\\"), sc, shot, cache_type_name[type]);
         }
 
     }

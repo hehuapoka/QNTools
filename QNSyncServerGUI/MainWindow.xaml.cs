@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace QNSyncServerGUI
 {
@@ -23,6 +24,11 @@ namespace QNSyncServerGUI
         ProjectAll project_all;
         System.Windows.Forms.NotifyIcon notifyIcon;
         System.Windows.Forms.MenuItem[] menuItems;
+
+        DispatcherTimer timer;
+        bool syncing = false;
+
+        public int progressValue { set; get; } = 10;
         public MainWindow()
         {
             InitializeComponent();
@@ -30,17 +36,18 @@ namespace QNSyncServerGUI
             project_all = new ProjectAll();
 
             this.cureen_project.ItemsSource = project_all.project_list;
-
             changeProject(0);
-            icon();
+            InitNotify();
+            
         }
 
-        private void icon()
+        private void InitNotify()
         {
             System.Windows.Forms.MenuItem open_item = new System.Windows.Forms.MenuItem("打开主页面");
             open_item.Click += new EventHandler((o, e) => { this.WindowState=WindowState.Normal;this.Show(); });
 
             System.Windows.Forms.MenuItem sync_item = new System.Windows.Forms.MenuItem("同步");
+            sync_item.Click += new EventHandler(SyncBackground);
 
             System.Windows.Forms.MenuItem close_item = new System.Windows.Forms.MenuItem("退出");
             close_item.Click += new EventHandler((o, e) => { this.Close(); });
@@ -57,8 +64,82 @@ namespace QNSyncServerGUI
             notifyIcon.DoubleClick += OnNotifyIconDoubleClick;
             notifyIcon.ShowBalloonTip(1000);
 
+            InitTimer();
+
 
         }
+        private void InitTimer()
+        {
+            timer = new DispatcherTimer();
+            timer.Tick += timeEventUpdate;
+            resetTimer();
+            //timer.Start();
+        }
+        private TimeSpan TimeSpanMax(TimeSpan a,TimeSpan b)
+        {
+            if (a > b) return a;
+            return b;
+        }
+        private void resetTimer()
+        {
+            //Math.Max(TimeSpan.FromMinutes(10), TimeSpan.FromDays(m_day_s.Value) + TimeSpan.FromHours(m_hours_s.Value) + TimeSpan.FromMinutes(m_mintus_s.Value));
+            timer.Interval = TimeSpanMax(TimeSpan.FromMinutes(10), TimeSpan.FromDays(m_day_s.Value) + TimeSpan.FromHours(m_hours_s.Value) + TimeSpan.FromMinutes(m_mintus_s.Value));
+        }
+
+        private async void  timeEventUpdate(object sender,EventArgs e)
+        {
+            if ((bool)autoUpdata.IsChecked && this.WindowState == WindowState.Minimized && syncing == false)
+            {
+                notifyIcon.BalloonTipText = "后台同步中...";
+                notifyIcon.ShowBalloonTip(1000);
+                await runTask();
+            }
+        }
+        private async void SyncBackground(object sender, EventArgs e)
+        {
+            await runTask();
+        }
+        private async Task runTask()
+        {
+            syncing = true;
+            var progress = new Progress<int>(percent =>
+            {
+                progressBar.Value = percent;
+            }
+            );
+            await Task.Run(() => runSyncGetCount());
+
+            int a = Sync.sync_tasks.Count;
+            progressBar.Maximum = a;
+            progressBar.Value = 0;
+            if(a>0)
+                await Task.Run(() => runSync(progress,a));
+            Sync.sync_tasks.Clear();
+
+            syncing = false;
+        }
+
+        private void runSyncGetCount()
+        {
+            Sync.GetAllTask(project_all);
+        }
+        private void runSync(IProgress<int> pbar,int CC)
+        {
+            int i = 1;
+            foreach(var a in Sync.sync_tasks)
+            {
+                Sync.ProcessTask(a);
+                i++;
+                pbar.Report(i);
+            }
+        }
+
+        //程序自启动
+
+
+
+
+
         private void OnNotifyIconDoubleClick(object sender, EventArgs e)
         {
             this.WindowState = WindowState.Normal;
@@ -73,7 +154,13 @@ namespace QNSyncServerGUI
 
                 notifyIcon.BalloonTipText = "千鸟文件同步最小化";
                 notifyIcon.ShowBalloonTip(1000);
+                timer.Start();
+                resetTimer();
 
+            }
+            else
+            {
+                timer.Stop();
             }
         }
 
@@ -93,9 +180,19 @@ namespace QNSyncServerGUI
             shotview.ItemsSource = ((ConfigData)this.DataContext).ShotList;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            project_all.WriteConfig();
+            mainButton.IsEnabled = false;
+            if(!syncing)
+            {
+                await runTask();
+            }
+            else
+            {
+                MessageBox.Show("任务在后台运行中");
+            }
+            //Console.WriteLine(project_all.project_list[0].Sync);
+            mainButton.IsEnabled = true;
         }
 
         private void anims_Click(object sender, RoutedEventArgs e)
@@ -142,7 +239,24 @@ namespace QNSyncServerGUI
                 WindowState = WindowState.Minimized;
                 e.Cancel = true;   
             }
+            else
+            {
+                project_all.WriteConfig();
+            }
                 
+        }
+
+        private void windows_Activated(object sender, EventArgs e)
+        {
+            if((bool)selfStart.IsChecked)
+            {
+                Tools.AutoStartSync((bool)selfStart.IsChecked, System.IO.Directory.GetCurrentDirectory());
+            }
+        }
+
+        private void selfStart_Checked(object sender, RoutedEventArgs e)
+        {
+            Tools.AutoStartSync((bool)selfStart.IsChecked, System.IO.Directory.GetCurrentDirectory());
         }
     }
 }
