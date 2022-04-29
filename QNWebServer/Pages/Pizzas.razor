@@ -2,14 +2,44 @@
 @using QNWebServer.Data
 @inject PizzaService PizzaSvc
 <h3>Pizzas</h3>
+@if(@todaysPizzas == null)
+{
+    <p>今天没有可以售卖的披萨</p>
+}
+else
+{
+    <table>
+    <thead>
+        <tr>
+            <th>Pizza Name</th>
+            <th>Description</th>
+            <th>Vegetarian</th>
+            <th>Vegan</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+        <tbody>
+        @foreach (var pizza in todaysPizzas)
+        {
+            <tr>
+                <td>@pizza.Name</td>
+                <td>@pizza.Description</td>
+                <td>@pizza.Vegetarian</td>
+                <td>@pizza.Vegan</td>
+                <td>@pizza.Price</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
 
 @code {
 
     private Pizza[]? todaysPizzas;
-        protected override async Task OnInitializedAsync()
-        {
-            todaysPizzas = await PizzaSvc.GetPizzasAsync();
-        }
+    protected override async Task OnInitializedAsync()
+    {
+        todaysPizzas = await PizzaSvc.GetPizzasAsync();
+    }
 }
 
 
