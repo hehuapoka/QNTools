@@ -1,0 +1,38 @@
+﻿@page "/"
+
+<div class="main">
+  <h1>豆腐干的披萨店</h1>
+  <ul class="pizza-cards">
+    @if (specials != null)
+    {
+      @foreach (var special in specials)
+      {
+        <li style="background-image: url('@special.ImageUrl')">
+          <div class="pizza-info">
+              <span class="title">@special.Name</span>
+                  @special.Description
+                <span class="price">@special.GetFormattedBasePrice()</span>
+          </div>
+        </li>
+      }
+    }
+  </ul>
+</div>
+@code
+{
+    public List<PizzaSpecial> specials = new();
+        protected override void OnInitialized()
+        {
+             specials.AddRange(new List<PizzaSpecial>
+        {
+            new PizzaSpecial { Name = "好吃的披萨", BasePrice =  11.99M, Description = "真的很好吃的披萨", ImageUrl="img/pizzas/bacon.jpg"},
+            new PizzaSpecial { Name = "喜欢的披萨", BasePrice =  12.75M, Description = "我真的很喜欢的披萨", ImageUrl="img/pizzas/meaty.jpg"},
+            new PizzaSpecial { Name = "推荐的披萨", BasePrice =  11.5M, Description = "我热烈推荐的披萨", ImageUrl="img/pizzas/salad.jpg"},
+            new PizzaSpecial { Name = "不好吃的披萨", BasePrice =  9.99M, Description = "这个披萨真不好吃，上次把老鼠吃吐了", ImageUrl="img/pizzas/margherita.jpg"},
+            new PizzaSpecial { Name = "她喜欢的披萨", BasePrice =  11.99M, Description = "那个她最喜欢的披萨，每次都吃不饱", ImageUrl="img/pizzas/cheese.jpg"},
+            new PizzaSpecial { Name = "你不喜欢的披萨", BasePrice =  10.5M, Description = "垃圾，分量少，还贵", ImageUrl="img/pizzas/pepperoni.jpg" }               
+        });
+        }
+
+}
+

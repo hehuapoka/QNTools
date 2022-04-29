@@ -1,0 +1,15 @@
+﻿@page "/pizzas"
+@using QNWebServer.Data
+@inject PizzaService PizzaSvc
+<h3>Pizzas</h3>
+
+@code {
+
+    private Pizza[]? todaysPizzas;
+        protected override async Task OnInitializedAsync()
+        {
+            todaysPizzas = await PizzaSvc.GetPizzasAsync();
+        }
+}
+
+
