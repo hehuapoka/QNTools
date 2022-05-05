@@ -4,20 +4,24 @@
 @inject IJSRuntime IJSRuntime
 @inject ProtectedSessionStorage ProtectedSessionStorage
 
-<EditForm Model=loginUser OnValidSubmit=LoginU class="login_main">
-    <DataAnnotationsValidator/>
-    <div class="login_item">
-        <span>名称:</span><InputText @bind-Value="loginUser.Name"/>
-        <ValidationMessage For="@(() => loginUser.Name)" />
-    </div>
-    <br/>
-    <div class="login_item">
-        <span>密码:</span><InputText @bind-Value="loginUser.Password"/>
-        <ValidationMessage For="@(() => loginUser.Password)" />
-    </div>
-    <br>
-    <button type="submit" class="login1_button">登录</button>
-</EditForm>
+<div class="login_main">
+    <h3 class="login_text">登录系统</h3>
+    <EditForm Model=loginUser OnValidSubmit=LoginU class="login_form">
+        <DataAnnotationsValidator/>
+        <div class="login_item">
+            <span>名称:</span><InputText @bind-Value="loginUser.Name"/>
+            <ValidationMessage For="@(() => loginUser.Name)" />
+        </div>
+        <br/>
+        <div class="login_item">
+            <span>密码:</span><InputText @bind-Value="loginUser.Password"/>
+            <ValidationMessage For="@(() => loginUser.Password)" />
+        </div>
+        <br>
+        <button type="submit" class="login1_button">登录</button>
+    </EditForm>
+</div>
+
 
 @code
 {

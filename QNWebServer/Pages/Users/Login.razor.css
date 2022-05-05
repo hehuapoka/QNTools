@@ -1,0 +1,22 @@
+
+.login_main
+{
+    width: 20rem;
+    height: 20rem;
+    margin: auto;
+}
+.login_text
+{
+    margin-left: auto;
+    text-align: center;
+}
+.login1_button
+{
+    margin-left: 7rem;
+    border-width: 1px;
+}
+
+.login1_button:hover
+{
+    background-color: aqua;
+}

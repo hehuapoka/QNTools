@@ -27,11 +27,11 @@ public class UserController:Controller
        var a= await _db.Users.Where(u => u.Name == user.Name).FirstOrDefaultAsync();
        if(a == null)
        {
+           if(user.Type==UsersType.SuperAdmin) return false;
            await _db.AddAsync(new Users{Name=user.Name,DisplayName=user.DisplayName,Type=user.Type,Password=user.Password});
            await _db.SaveChangesAsync();
            return true;
        }
-        await Task.Delay(0);
         return false;
     }
     //登录
