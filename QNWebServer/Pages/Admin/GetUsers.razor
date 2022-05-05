@@ -1,0 +1,27 @@
+@page "/admin/users"
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+<ul>
+    @if(users != null)
+    {
+        @foreach (var user in users)
+        {
+            <li>@user.Name:@Enum.GetName(typeof(UsersType),user.Type)</li>   
+        }
+        
+    }
+    else
+    {
+        <p>用户不存在</p>
+    }
+    
+</ul>
+
+@code
+{
+    private List<UsersLabel>? users {get;set;}
+    protected override async Task OnInitializedAsync()
+    {
+        users = await HttpClient.GetFromJsonAsync<List<UsersLabel>>(NavigationManager.BaseUri + "admin/all");
+    }
+}

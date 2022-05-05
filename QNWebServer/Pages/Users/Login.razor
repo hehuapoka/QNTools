@@ -1,0 +1,44 @@
+@page "/user/login"
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+@inject IJSRuntime IJSRuntime
+@inject ProtectedSessionStorage ProtectedSessionStorage
+
+<EditForm Model=loginUser OnValidSubmit=LoginU class="login_main">
+    <DataAnnotationsValidator/>
+    <div class="login_item">
+        <span>名称:</span><InputText @bind-Value="loginUser.Name"/>
+        <ValidationMessage For="@(() => loginUser.Name)" />
+    </div>
+    <br/>
+    <div class="login_item">
+        <span>密码:</span><InputText @bind-Value="loginUser.Password"/>
+        <ValidationMessage For="@(() => loginUser.Password)" />
+    </div>
+    <br>
+    <button type="submit" class="login1_button">登录</button>
+</EditForm>
+
+@code
+{
+    private LoginUser loginUser = new();
+    async void LoginU()
+    {
+        if(!string.IsNullOrWhiteSpace(loginUser.Name) && !string.IsNullOrWhiteSpace(loginUser.Password))
+        {
+            var response=await HttpClient.PostAsJsonAsync(NavigationManager.BaseUri+"admin/login",loginUser);
+            UserLoginState? state=await response.Content.ReadFromJsonAsync<UserLoginState>();
+            if(state.Name != null)
+            {
+                await IJSRuntime.InvokeVoidAsync("alert",$"注册成功！欢迎{state.DisplayName}");
+                await ProtectedSessionStorage.SetAsync("UserState",state);
+                NavigationManager.NavigateTo("/");
+            }
+            else
+            {
+                await IJSRuntime.InvokeVoidAsync("alert","登录失败！你可能使用了错误的密码和账户");
+            }
+        }
+    }
+
+}

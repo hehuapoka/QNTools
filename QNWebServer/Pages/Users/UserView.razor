@@ -1,0 +1,25 @@
+@inject ProtectedSessionStorage ProtectedSessionStorage
+@if(userLoginState != null)
+{
+    <img src="Logos/qnlogo.png" class="user_logo"/><span>@userLoginState.DisplayName</span>
+}
+
+
+@code
+{
+    private UserLoginState? userLoginState;
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if(firstRender)
+            {
+                var a=await ProtectedSessionStorage.GetAsync<UserLoginState>("UserState");
+                if(a.Success)
+                {
+                    userLoginState=a.Value;
+                } 
+                StateHasChanged();
+            }
+            
+        }
+}
+

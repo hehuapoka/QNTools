@@ -55,7 +55,9 @@ namespace Test
         static void Main(string[] args)
         {
 
-            AutoStartSync(true,$"\"{System.IO.Path.Combine(Directory.GetCurrentDirectory(), "QNSyncServerGUI.exe")}\" --cmd=autorun");
+            //AutoStartSync(true,$"\"{System.IO.Path.Combine(Directory.GetCurrentDirectory(), "QNSyncServerGUI.exe")}\" --cmd=autorun");
+            var a = new { a = "10", b = 10 };
+            Console.WriteLine(a.GetType().ToString());
             Console.ReadKey();
 
         }

@@ -1,31 +1,9 @@
 ﻿@page "/"
-@inject HttpClient HttpClient
-@inject NavigationManager NavigationManager
-<div class="main">
-  <h1>豆腐干的披萨店</h1>
-  <ul class="pizza-cards">
-    @if (specials != null)
-    {
-      @foreach (var special in specials)
-      {
-        <li style="background-image: url('@special.ImageUrl')">
-          <div class="pizza-info">
-              <span class="title">@special.Name</span>
-                  @special.Description
-                <span class="price">@special.GetFormattedBasePrice()</span>
-          </div>
-        </li>
-      }
-    }
-  </ul>
-</div>
-@code
-{
-    public List<PizzaSpecial> specials = new();
-        protected override async Task OnInitializedAsync()
-        {
-            specials = await HttpClient.GetFromJsonAsync<List<PizzaSpecial>>(NavigationManager.BaseUri + "specials");
-        }
 
-}
+<PageTitle>Index</PageTitle>
 
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
