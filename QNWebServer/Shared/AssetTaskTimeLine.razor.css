@@ -1,0 +1,30 @@
+.task_line_main
+{
+    width: 100%;
+    overflow: hidden;
+}
+.timeline
+{
+    background-color: rgb(26, 26, 26);
+    width: 100%;
+    height: 10px;
+}
+.timeline > p
+{
+    position: absolute;
+}
+.attl_item
+{
+    position: relative;
+    background-color: brown;
+    margin: 2px;
+    list-style: none;
+    margin-left: -2%;
+    text-align: center;
+}
+
+.attl_item:hover
+{
+    transform: scale(1.02);
+    background-color: rgb(7, 70, 153);
+}

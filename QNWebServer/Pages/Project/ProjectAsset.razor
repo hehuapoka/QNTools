@@ -1,0 +1,147 @@
+@page "/project/{ProjectName}/assets/"
+@using QNWebServer.Data
+@layout ProjectAssetLayout
+@inject NewAsset NewAsset
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+<h1 class="projectasset_title">@ProjectName.ToUpper()</h1>
+ <div class="asset_tools">
+     <button @onclick="@(() => NewAsset.IsShow=true)"><span class="oi oi-plus"></span> 新资产</button>
+ </div>
+
+ <div class="asset_layout">
+     <button @onclick="()=>is_grid_style=true"><span class="oi oi-grid-three-up"></span></button>
+     <input type="range" min=50 max=250 @bind="display_height_grid"/>
+     <button @onclick="()=>is_grid_style=false"><span class="oi oi-list"></span></button>
+     <input type="range" min=10 max=150 @bind="display_height"/>
+     <span>
+         <label>角色</label><input type="checkbox" @bind="chr"/>
+          <label>道具</label><input type="checkbox" @bind="prop"/>
+          <label>元素</label><input type="checkbox" @bind="elem"/>
+          <label>场景</label><input type="checkbox" @bind="sets"/>
+          <input @bind="search_text" placeholder="搜索" />
+     </span>
+ </div>
+ 
+<hr>
+<div class="assetlayout_box">
+        @if(project_info != null)
+        {
+            @if(is_grid_style)
+            {
+                <ul class="assetlayout_ul" style="grid-template-columns: repeat(auto-fill, @(display_height_grid)px);">
+                    @foreach (var item in project_info.Assets)
+                    {
+                        @if((item.Type == AssetType.CHR && chr==true) || (item.Type == AssetType.PROP && prop==true) || (item.Type == AssetType.ELEM && elem==true) || (item.Type == AssetType.SET && sets==true))
+                        {
+                            @if(String.IsNullOrWhiteSpace(search_text))
+                            {
+                                <li class="assetlayout_li" style="height:  @(display_height_grid)px;background-image: url(@item.Image);" @ondblclick="@(() => ToInfo(item.Name))">
+                                    <p class="assetlayout_li_grid_p">@item.Name</p>
+                                </li>
+                            }
+                            else
+                            {
+                                @if(item.Name.Contains(search_text))
+                                {
+                                    <li class="assetlayout_li" style="height:  @(display_height_grid)px;background-image: url(@item.Image);" @ondblclick="@(() => ToInfo(item.Name))">
+                                        <p class="assetlayout_li_grid_p">@item.Name</p>
+                                    </li>
+                                }
+                                
+                            }
+                            
+                        }
+                        
+                    }
+                </ul>
+            }
+            else
+            {
+                <ul class="assetlayout_ul_list">
+                    @foreach (var item in project_info.Assets)
+                    {
+
+                        @if((item.Type == AssetType.CHR && chr==true) || (item.Type == AssetType.PROP && prop==true) || (item.Type == AssetType.ELEM && elem==true) || (item.Type == AssetType.SET && sets==true))
+                        {
+                            @if(String.IsNullOrWhiteSpace(search_text))
+                            {
+                                <li class="assetlayout_li" style="height:  @(display_height)px;" @ondblclick="@(() => ToInfo(item.Name))">
+                                    <div class="assetlayout_li_img" style="background-image: url(@item.Image);width: @(display_height)px;height: @(display_height)px"></div>
+                                    <div class="assetlayout_li_infos" style="left: @(display_height)px;">
+                                        <p class="assetlayout_li_infos_0">名称：@(item.Name) /创建人：@(item.CreateUser)/ @item.CreateTime.ToString("yyyy/MM/dd")</p>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                @if(item.Name.Contains(search_text))
+                                {
+                                    <li class="assetlayout_li" style="height:  @(display_height)px;" @ondblclick="@(() => ToInfo(item.Name))">
+                                        <div class="assetlayout_li_img" style="background-image: url(@item.Image);width: @(display_height)px;height: @(display_height)px"></div>
+                                        <div class="assetlayout_li_infos" style="left: @(display_height)px;">
+                                            <p class="assetlayout_li_infos_0">名称：@(item.Name) /创建人：@(item.CreateUser)/ @item.CreateTime.ToString("yyyy/MM/dd")</p>
+                                        </div>
+                                    </li>
+                                }
+                                
+                            }
+                            
+                        }
+                        
+                    }
+                </ul>
+            }
+            
+        }
+        else
+        {
+            <p>现在还没有资产呢！！！！！！！！！</p>
+        }
+ </div>
+
+@if(NewAsset.IsShow)
+{
+    <NewAssetView newasset="NewAsset" closeDialog="NewAsset.closeDialog" updateDialog="updateview"/>
+}
+@code
+{
+    [Parameter]
+    public string? ProjectName {get;set;}
+
+    private bool is_grid_style = true;
+    private int display_height {get;set;} = 60;
+    private int display_height_grid {get;set;} = 120;
+    private QNWebServer.Data.Project? project_info;
+    
+    private bool chr = true;
+    private bool prop = true;
+    private bool elem = true;
+    private bool sets = true;
+    private string search_text="";
+    protected override async Task OnInitializedAsync()
+    {
+        NewAsset.Project = ProjectName;
+        await updateview();
+        //project_info=await HttpClient.GetFromJsonAsync<QNWebServer.Data.Project>(NavigationManager.BaseUri + $"Admin/project/asset/{ProjectName}");
+    }
+
+    
+
+    async Task updateview()
+    {
+        project_info=await HttpClient.GetFromJsonAsync<QNWebServer.Data.Project>(NavigationManager.BaseUri + $"Admin/project/assets/{ProjectName}");
+        //await Task.Delay(0);
+    }
+
+    private void ToInfo(string nm)
+    {
+        NavigationManager.NavigateTo($"/project/{ProjectName}/assets/{nm}");
+    }
+
+}
+
+
+
+

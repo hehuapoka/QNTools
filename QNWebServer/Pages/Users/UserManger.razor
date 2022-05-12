@@ -1,0 +1,95 @@
+@page "/admin/user/manger"
+@layout UserMangerLayout
+@inject ProtectedSessionStorage session
+@inject NavigationManager NavigationManager
+@inject HttpClient HttpClient
+@inject IJSRuntime IJSRuntime
+@if(us != null)
+{
+    @if(us.Type > UsersType.Product)
+    {
+        <p>你没用权限访问该页面</p>
+    }
+    else
+    {
+        @if(usertemp != null)
+        {
+            <ul class="usermanger_ul">
+                @foreach (var item in usertemp)
+                {
+                    <li>
+                        <div class="usermanger_box_img" style="background-image: url(@(item.Image??"Logos/qnlogo.png"));">
+                            @* <img src="@(item.Image??"Logos/qnlogo.png")"> *@
+                        </div>
+                        <div class="usermanger_box_item">
+                            <div class="usermanger_info_item">
+                                <span>显示名称:</span>
+                                <span>@item.DisplayName</span>
+                            </div>
+
+                            <div class="usermanger_info_item">
+                                <span>登录名称:</span>
+                                <span>@item.Name</span>
+                            </div>
+
+                            <div class="usermanger_info_item">
+                                <span>用户类型:</span>
+                                <span>@item.Type</span>
+                            </div>
+                        </div>
+                        
+                        <button @onclick="@(()=> RemoveFromUserTemp(item))"><span class="oi oi-circle-x"></span></button>
+                        <button @onclick="@(()=> AddToUser(item))"><span class="oi oi-circle-check"></span></button>
+                    </li>
+                }
+            
+            </ul>
+        }
+        
+    }
+}
+else
+{
+    <p>访问本页面请先登录</p>
+}
+
+@code
+{
+    private UserLoginState? us {get;set;}
+
+    private List<UsersTemp>? usertemp {get;set;}
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            us=await UserFunc.IsLogin(session);
+            usertemp = await HttpClient.GetFromJsonAsync<List<UsersTemp>>(NavigationManager.BaseUri + "admin/users/alltemp");
+            await UpDateUserTemp();
+        }
+    }
+
+    async Task UpDateUserTemp()
+    {
+        usertemp = await HttpClient.GetFromJsonAsync<List<UsersTemp>>(NavigationManager.BaseUri + "admin/users/alltemp");
+        StateHasChanged();
+    }
+    async Task AddToUser(UsersTemp usertemp)
+    {
+        if(us == null) return;
+        var response=await HttpClient.PostAsJsonAsync(NavigationManager.BaseUri+"admin/register/add",usertemp);
+        var ok = await response.Content.ReadFromJsonAsync<bool>();
+        if(!ok)
+            await IJSRuntime.InvokeVoidAsync("alert","注册失败！可能该用户已存在");
+        
+        await UpDateUserTemp();
+    }
+
+    async Task RemoveFromUserTemp(UsersTemp usertemp)
+    {
+        if(us == null) return;
+        var response=await HttpClient.PostAsJsonAsync(NavigationManager.BaseUri+"admin/users/removetemp",usertemp);
+        var ok = await response.Content.ReadFromJsonAsync<bool>();
+        await UpDateUserTemp();
+    }
+}
+

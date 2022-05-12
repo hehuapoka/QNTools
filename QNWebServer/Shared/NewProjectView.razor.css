@@ -1,0 +1,62 @@
+.newprojectview_main
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 2000;
+    width: 100%;
+    height: 100%;
+}
+
+.newprojectview_mid
+{  
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 20rem;
+    height: 28rem;
+    margin: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    margin-top: 150px;
+    
+    background-color:rgb(218, 218, 218);
+    border-radius: 5px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.6);
+
+}
+.newproject_x
+{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 20px;
+}
+.newproject_x:hover
+{
+    background-color: azure;
+}
+.newprojectview_description_main
+{
+    margin: auto;
+    width: 100%;
+}
+.newprojectview_description
+{
+    width: 100%;
+    height: 10rem;
+
+}
+
+.newprojectview_submit
+{
+    width: 100%;
+    border-width: 0;
+    border-radius: 5px;
+}
+.newprojectview_submit:hover
+{
+    background-color: aqua;
+}

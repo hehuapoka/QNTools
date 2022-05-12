@@ -1,9 +1,51 @@
 ﻿@page "/"
+@using QNWebServer.Data
+@inject HttpClient HttpClient
+@inject IJSRuntime IJSRuntime
+@inject ProtectedSessionStorage ProtectedSessionStorage
+@inject NavigationManager NavigationManager
+@inject NewProject NewProject
 
-<PageTitle>Index</PageTitle>
+@* <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<SurveyPrompt Title="How is Blazor working for you?" /> *@
+
+@if(projs != null)
+{
+    <ul class="project-cards">
+    @foreach (var item in projs)
+    {
+        <li style="background-image: url('@item[1]');" @onclick="@(()=>NavigationManager.NavigateTo($"/project/{item[0]}"))">
+            <div class="project_title">@item[0].ToUpper()</div>
+        </li>
+    }
+    <li @onclick="@(()=>NewProject.CreateDialog())">
+            <div class="project_add"><span class="oi oi-plus"></span></div>
+        </li>
+    </ul>
+}
+else
+{
+    <p>没有项目</p>
+}
+
+@if(@NewProject.IsShow)
+{
+    <NewProjectView proj="NewProject" closeWin="NewProject.CloseDialog"/>
+}
+
+
+
+@code
+{
+    //@onclick="@(()=>NavigationManager.NavigateTo("/project/{Name:string}"))"
+    private List<List<string>>? projs {get;set;}
+    protected override async Task OnInitializedAsync()
+    {
+        projs=await HttpClient.GetFromJsonAsync<List<List<string>>>(NavigationManager.BaseUri + "admin/project/all");
+    }
+}

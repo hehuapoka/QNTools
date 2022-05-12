@@ -5,4 +5,6 @@ public class UserLoginState
     public string DisplayName{get;set;}
     public UsersType Type{get;set;}
 
+    public string? Image {get;set;}
+
 }

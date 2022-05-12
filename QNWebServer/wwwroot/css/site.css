@@ -1,4 +1,5 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('fontello-b298c585/css/fontello.css');
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -63,50 +64,111 @@ a, .btn-link {
         content: "An error has occurred."
     }
 
-    
-    .login_box
-    {
-        margin: auto;
-        margin-top: 10rem;
-        padding: 20px;
-    }
-    .login_main
-    {
-        width: 40rem;
-        margin: auto;
-        padding-top: 3%;
-        padding-left: 2%;
-        padding-right: 1%;
-    }
-
-    .login_label
-    {
-        padding-right: 1rem;
-    }
-    .login_submit
-    {
-        margin: auto;
-        text-align: center;
-        padding-right: 30%;
-    }
-
-    .login_button
-    {
-        border-radius: 3px;
-        width: 50%;
-        margin-top: 5px;
-        margin-right: 6rem;
-        
-    }
-
-    .login1_button
-    {
-        border-radius: 3px;
-        width: 20%;
-        text-align: center;   
-    }
-
-    .user_logo
+.user_logo
 {
     width: 1.5rem;
+}
+
+
+.project-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 50%);
+    grid-gap: 10rem;
+    justify-content: center;
+    padding-left: 0;
+}
+
+    .project-cards > li {
+        height: 30rem;
+        position: relative;
+        background-size: contain;
+        background-repeat: round;
+        border-radius: 0.5rem;
+        list-style-type: none;
+        box-shadow: 0 8px 8px rgba(0,0,0,0.1);
+        transition: 0.1s ease-out;
+    }
+
+        .project-cards > li:hover {
+            transform: scale(1.02);
+        }
+    
+    .project_title
+    {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        color: #313131;
+        font-size: 2rem;
+    }
+    .project_add
+    {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        color: #696969;
+        font-size: 5rem;
+        margin: auto;
+        width: 5%;
+        height: 5%;
+    }
+
+
+.project_card
+{
+    background: #696969;
+    height: 5rem;
+    margin: 1rem;
+}
+.project_card:hover
+{
+    transform: scale(1.02);
+}
+.project_remove
+{
+    position: fixed;
+    color: #696969;
+    left: 0;
+    right: 0;
+    bottom: 10rem;
+    margin: auto;
+    width: fit-content;
+}
+
+.projectasset_title
+{
+    text-align: center;
+}
+.asset_tools
+{
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.asset_tools > button
+{
+    border-style: none;
+    padding: 1rem;
+}
+
+.asset_tools > button:hover
+{
+    background-color: #1b6ec2;
+}
+
+.asset_layout > button
+{
+    border-style: none;
+    margin-right: 2px;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+
+#fileasset_drap
+{
+    width: 400px;
+    height: 200px;
+    background-color: #1b6ec2;
 }

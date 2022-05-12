@@ -1,22 +1,38 @@
 
 .login_main
 {
+    position: absolute;
     width: 20rem;
-    height: 20rem;
+    height: 25rem;
+    left: 0;
+    right: 0;
+    top: 160px;
     margin: auto;
+    padding-left: 25px;
+    padding-right: 25px;
+    background-color:rgb(218, 218, 218);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0.5, 0.5, 0.5, 0.5);
+
 }
 .login_text
 {
-    margin-left: auto;
     text-align: center;
+    width: 100%;
+    margin-top: 30px;
 }
-.login1_button
+.login_button
 {
-    margin-left: 7rem;
-    border-width: 1px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 120px;
+    border-width: 0;
+
 }
 
-.login1_button:hover
+.login_button:hover
 {
     background-color: aqua;
 }

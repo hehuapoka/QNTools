@@ -9,8 +9,8 @@ namespace QNWebServer.Admin;
 [ApiController]
 public class UserController:Controller
 {
-    private readonly UserConetext _db;
-    public UserController(UserConetext db)
+    private readonly UserContext _db;
+    public UserController(UserContext db)
     {
         _db = db;
     }
@@ -20,15 +20,38 @@ public class UserController:Controller
     {
         return await _db.Users.Select(u => new UsersLabel{ Name=u.Name,Type=u.Type}).ToListAsync();
     }
-    //注册用户
+
+    [HttpGet("users/alltemp")]
+    public async Task<ActionResult<List<UsersTemp>>> GetAllTempUsers()
+    {
+        return await _db.UsersTemp.ToListAsync();
+    }
+
     [HttpPost("register")]
-    public async Task<ActionResult<bool>> UserRegister(Users user)
+    public async Task<ActionResult<bool>> UserRegister(UsersTemp user)
+    {
+       var a= await _db.UsersTemp.Where(u => u.Name == user.Name).FirstOrDefaultAsync();
+       var b= await _db.Users.Where(u => u.Name == user.Name).FirstOrDefaultAsync();
+       if(a == null || b == null)
+       {
+           if(user.Type==UsersType.SuperAdmin) return false;
+           await _db.UsersTemp.AddAsync(new UsersTemp{Name=user.Name,DisplayName=user.DisplayName,Type=user.Type,Password=user.Password});
+           await _db.SaveChangesAsync();
+           return true;
+       }
+        return false;
+    }
+
+    //注册用户
+    [HttpPost("register/add")]
+    public async Task<ActionResult<bool>> UserRegisterAdd(UsersTemp user)
     {
        var a= await _db.Users.Where(u => u.Name == user.Name).FirstOrDefaultAsync();
        if(a == null)
        {
            if(user.Type==UsersType.SuperAdmin) return false;
-           await _db.AddAsync(new Users{Name=user.Name,DisplayName=user.DisplayName,Type=user.Type,Password=user.Password});
+           await _db.Users.AddAsync(new Users{Name=user.Name,DisplayName=user.DisplayName,Type=user.Type,Password=user.Password});
+           _db.UsersTemp.Remove(user);
            await _db.SaveChangesAsync();
            return true;
        }
@@ -45,6 +68,22 @@ public class UserController:Controller
        }
         
         
-        return new UserLoginState{Name=a.Name,DisplayName=a.DisplayName,Type=a.Type};
+        return new UserLoginState{Name=a.Name,DisplayName=a.DisplayName,Type=a.Type,Image = a.Image};
+    }
+
+    [HttpPost("users/removetemp")]
+    public async Task<ActionResult<bool>> UserRemoveTemp(UsersTemp user)
+    {
+       _db.UsersTemp.Remove(user);
+       await _db.SaveChangesAsync();
+       return true;
+    }
+
+    [HttpPost("users/remove")]
+    public async Task<ActionResult<bool>> UserRemove(Users user)
+    {
+       _db.Users.Remove(user);
+       await _db.SaveChangesAsync();
+       return true;
     }
 }

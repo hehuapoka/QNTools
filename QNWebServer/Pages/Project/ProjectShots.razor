@@ -1,0 +1,12 @@
+@page "/project/{ProjectName}/shots/"
+
+<h1>@ProjectName.ToUpper()</h1>
+
+<p>hello world,这是 @ProjectName 的镜头页</p>
+
+@code
+{
+    [Parameter]
+    public string? ProjectName {get;set;}
+
+}

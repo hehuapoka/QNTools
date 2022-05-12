@@ -1,0 +1,183 @@
+@page "/fileassets/ImagesLook"
+@layout ProjectAssetLayout
+@inject ProtectedSessionStorage ProtectedSessionStorage
+@inject IJSRuntime IJSRuntime
+@inject NavigationManager NavigationManager
+@inject FileAssetContext FileAssetContext
+@inject IWebHostEnvironment WebEnv
+@inject HttpClient HttpClient
+<div class="img_head">
+    <h1>图片资源管理器</h1>
+    <p><strong>提示：</strong>上传文件最大为15MB @file_Asset_remove.Count</p>
+    <div>
+    <InputFile OnChange=UpdateImages multiple/>
+    </div>
+    @if(is_updata)
+    {
+        <p>文件上传中。。。</p>
+    }
+    @foreach (var item in error_Messages)
+    {
+        <p>@item</p>
+    }
+    <div class="img_head_path">
+        @if(file_Asset_sel != null)
+        {
+            <label>@(NavigationManager.BaseUri+file_Asset_sel.FilePath.Substring(1))</label>
+        }
+        
+    </div>
+    <div class="img_head_delete" @onclick="@(()=>DeleteImage())">
+        <span class="oi oi-trash"></span>
+    </div>
+
+    <div class="img_head_update" @onclick="@(()=>DeleteImageSubmit())">
+        <span class="oi oi-cloud-upload"></span>
+    </div>
+</div>
+
+<div class="img_card_main">
+    <div class="img_card_mid">
+        @if(file_Asset_show != null)
+        {
+            @if(file_Asset_show != null)
+            {
+                @foreach(var item in file_Asset_show)
+                {
+                    <div class="img_card_item" @onclick="@(() => file_Asset_sel=item)" style="background-image: url('@item.FilePath');">
+                
+                    </div>
+                }
+            }
+            
+        }
+    </div>
+</div>
+
+
+@code
+{
+
+    private readonly int max_file_num=20;
+    private readonly long max_file_size=1024*1024*50;
+    private List<string> error_Messages = new();
+    public List<FileAsset> file_Asset=new();
+    public List<FileAsset>? file_Asset_show;
+    public List<FileAsset> file_Asset_remove {get;set;}=new();
+    public bool is_updata = false;
+    public FileAsset? file_Asset_sel;
+
+    public string image_path {get;set;}="";
+    protected override async Task OnInitializedAsync()
+    {
+        await UpFileAssetShow();
+    }
+    
+    async void UpdateImages(InputFileChangeEventArgs e)
+    {
+
+        var userA=await UserFunc.IsLogin(ProtectedSessionStorage);
+        if(userA == null)
+        {
+            await IJSRuntime.InvokeVoidAsync("alert","你需要先登录服务器。");
+            NavigationManager.NavigateTo("/user/login");
+
+        }
+        else
+        {
+            if(userA.Type <= UsersType.Product)
+            {
+
+                error_Messages.Clear();
+                file_Asset.Clear();
+                is_updata = true;
+
+                foreach(var file in e.GetMultipleFiles(max_file_num))
+                {
+                    string exn = Path.GetExtension(file.Name);
+                    if(exn == ".png" || exn == ".jpg")
+                    {
+                        try
+                        {
+                            string day_date = DateTime.Now.ToString("yyyyMMdd");
+                            
+                            string file_name = $"{Path.GetRandomFileName()}{Path.GetExtension(file.Name)}";
+                            string file_path = Path.Combine(WebEnv.ContentRootPath,"wwwroot\\Images",day_date,file_name);
+                            if(!Directory.Exists(Path.GetDirectoryName(file_path)))
+                            {
+                                Directory.CreateDirectory(Path.GetDirectoryName(file_path));
+                            }
+                            await using FileStream f_stream = new(file_path,FileMode.Create);
+                            await file.OpenReadStream(max_file_size).CopyToAsync(f_stream);
+
+                            //to data
+                            file_Asset.Add(
+                                new FileAsset{
+                                                Name=Path.GetFileName(file_path),
+                                                FilePath=file_path.Replace(Path.Combine(WebEnv.ContentRootPath,"wwwroot"),"").Replace("\\","/"),
+                                                FileType=FileType.Image,
+                                                Tags="png"
+                                            }
+                            );
+                        }
+                        catch(Exception ex)
+                        {
+                            error_Messages.Add($"文件{file.Name}上传失败 错误原因：{ex.Message}");
+                        }
+                    }
+                    else
+                    {
+                        error_Messages.Add($"文件{file.Name}上传失败 错误原因：上传文件不是png格式!");
+                    }
+                }
+
+                if(file_Asset.Count > 0)
+                {
+                    await FileAssetContext.Assets.AddRangeAsync(file_Asset);
+                    await FileAssetContext.SaveChangesAsync();
+                }
+                is_updata=false;
+                await UpFileAssetShow();
+                StateHasChanged();
+            }
+            else
+            {
+                await IJSRuntime.InvokeVoidAsync("alert","Sorry! 你没有权限上传图片。");
+            }
+        }
+        
+        
+    }
+
+    async Task UpFileAssetShow()
+    {
+        file_Asset_show=await HttpClient.GetFromJsonAsync<List<FileAsset>>(NavigationManager.BaseUri+"Admin/FileAssets/all");
+    }
+
+    void DeleteImage()
+    {
+        if(file_Asset_sel == null || file_Asset_show == null) return;
+        file_Asset_remove.Add(file_Asset_sel);
+        file_Asset_show.Remove(file_Asset_sel);
+        StateHasChanged();
+    }
+
+    async void DeleteImageSubmit()
+    {
+        if(file_Asset_remove.Count < 1)
+            return;
+        var a=await HttpClient.PostAsJsonAsync(NavigationManager.BaseUri + "Admin/FileAssets/deletes",file_Asset_remove);
+        bool result=await a.Content.ReadFromJsonAsync<bool>();
+        if(result)
+        {
+            file_Asset_remove.Clear();
+            await IJSRuntime.InvokeVoidAsync("alert","文件已删除");
+        }
+        else
+        {
+            await IJSRuntime.InvokeVoidAsync("alert","似乎遇到了点问题!");
+        }
+        
+    }
+}
+

@@ -9,16 +9,16 @@
     <EditForm Model=loginUser OnValidSubmit=LoginU class="login_form">
         <DataAnnotationsValidator/>
         <div class="login_item">
-            <span>名称:</span><InputText @bind-Value="loginUser.Name"/>
+            <p>名称:</p><InputText @bind-Value="loginUser.Name" style="width: 100%;border-radius: 3px;border-width:0px"/>
             <ValidationMessage For="@(() => loginUser.Name)" />
         </div>
         <br/>
         <div class="login_item">
-            <span>密码:</span><InputText @bind-Value="loginUser.Password"/>
+            <p>密码:</p><input type="password" @bind="loginUser.Password" style="width: 100%;border-radius: 3px;border-width:0px"/>
             <ValidationMessage For="@(() => loginUser.Password)" />
         </div>
         <br>
-        <button type="submit" class="login1_button">登录</button>
+        <button type="submit" class="login_button">登录</button>
     </EditForm>
 </div>
 
@@ -34,7 +34,7 @@
             UserLoginState? state=await response.Content.ReadFromJsonAsync<UserLoginState>();
             if(state.Name != null)
             {
-                await IJSRuntime.InvokeVoidAsync("alert",$"注册成功！欢迎{state.DisplayName}");
+                await IJSRuntime.InvokeVoidAsync("alert",$"登录成功！欢迎{state.DisplayName}");
                 await ProtectedSessionStorage.SetAsync("UserState",state);
                 NavigationManager.NavigateTo("/");
             }

@@ -1,0 +1,94 @@
+.newassetview_main
+{
+    position: absolute;
+    background-color: rgba(99, 99, 99, 0.397);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+.newassetview_box
+{
+    position: relative;
+    background-color: rgb(219, 219, 219);
+    width: 400px;
+    height: 600px;
+    margin: auto;
+    top: 20%;
+    box-shadow: 0 0 5px rgb(92, 92, 92,80);
+}
+.newassetview_box > p
+{
+    position: relative;
+    text-align: center;
+    font-weight: 600;
+    padding-top: 1rem;
+}
+.newassetview_close
+{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    color: rgb(92, 92, 92);
+    background-color: rgba(240, 248, 255, 0);
+    border-style: none;
+}
+.newassetview_close:hover
+{
+    transform: scale(1.1);
+}
+
+    .newassetview_line
+    {
+        position: relative;
+        height: 3px;
+        width: 100%;
+        background-color: rgb(129, 129, 129);
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+    .newasset_input
+    {
+        position: static;
+        margin: 10px;
+        display: block;
+    }
+        .newasset_input > p
+        {
+            position: absolute;
+            margin: auto;
+            right: 80%;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: small;
+        }
+        .newasset_input_sencond
+        {
+            position: absolute;
+            margin: auto;
+            left: 6rem;
+
+        }
+        .newasset_input_three
+        {
+            position: absolute;
+            margin: auto;
+            left: 80%;
+            font-size: smaller;
+            transform: scale(0.6);
+        }
+.newasset_submit
+{
+    position: absolute;
+    margin: auto;
+    left: 6rem;
+    border-style: none;
+    bottom: 5rem;
+    width: 14rem;
+}
+
+.newasset_submit:hover
+{
+    background-color: aqua;
+}

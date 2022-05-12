@@ -1,46 +1,57 @@
 @page "/user/register"
-@implements IDisposable
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
 @inject IJSRuntime IJSRuntime
-<div class="login_box">
-    <div class="login_main"><h1>新用户注册</h1></div>
-    <EditForm EditContext=editContext OnValidSubmit=PlaceOrder class="login_main">
+
+<div class="register_main">
+    <h4 class="register_title">新用户注册</h4>
+    <EditForm Model=user OnValidSubmit=PlaceOrder class="register_form">
         <DataAnnotationsValidator />
-        <div class="login_item">
-            <span class="login_label">显示名称:</span><InputText id="displayname" @bind-Value="user.DisplayName" />
+
+        <div class="register_item">
+            <div class="login_label">显示名称</div>
+            <InputText id="displayname" @bind-Value="user.DisplayName" class="register_text" placeholder="这里设置你的显示名称" style="width: 100%;border-radius: 3px;border-width:0px;font-size:0.5rem;height: 2rem;"/>
         </div>
-        <div>
-            <ValidationMessage For="@(()=> user.DisplayName)"/>
+        <ValidationMessage For="@(()=> user.DisplayName)"/>
+
+        <div class="register_item">
+            <div>账户名称:</div>
+            <InputText id="name" @bind-Value="user.Name" class="register_text" style="width: 100%;border-radius: 3px;border-width:0px"/>
         </div>
-        <div class="login_item">
-            <span class="login_label">注册名称:</span><InputText id="name" @bind-Value="user.Name" />
+        <ValidationMessage For="@(()=> user.Name)"/>
+
+        <div class="register_item">
+            <div>密码设置:</div>
+            <input type="password" id="password" @bind="user.Password" class="register_text" style="width: 100%;border-radius: 3px;border-width:0px"/>
         </div>
-        <div class="login_item">
-            <ValidationMessage For="@(()=> user.Name)"/>
-        </div>
-        <div class="login_item">
-            <span class="login_label">密码设置:</span><InputText id="password" @bind-Value="user.Password" />
-        </div>
-        <div>
-            <ValidationMessage For="@(()=> user.Password)"/>
-        </div>
-        <div class="login_item">
-            <span class="login_label">注册类型:</span><InputSelect id="type" @bind-Value="user.Type">
+        <ValidationMessage For="@(()=> user.Password)"/>
+
+        <div class="register_item">
+            <div>密码确认:</div>
+            <input type="password" id="password" @bind="rePassword" class="register_text" style="width: 100%;border-radius: 3px;border-width:0px"/>
+            @if(isError)
+            {
+                <p style="font-size: 0.5rem;color: #ff0000;">你的密码和第一次输入的密码不一样 @isError</p>
+            }
+        </div>   
+
+        <div class="register_item">
+            <div>注册类型:</div>
+            <InputSelect id="type" @bind-Value="user.Type">
                 @foreach (var item in Enum.GetValues(typeof(UsersType)))
                 {
                     <option value="@item">@item</option>
                 }
             </InputSelect>
         </div>
-        <div class="login_item">
-            <ValidationMessage For="@(()=> user.Type)"/>
-        </div>
 
-        <div class="login_submit">
-            <button class="login_button" type="Submit" disabled=@isError>提交</button>
-        </div>
+        <ValidationMessage For="@(()=> user.Type)"/>
+
+
+
+        <button class="register_button" type="submit" disabled=@isError>提交</button>
+
         
     </EditForm>
 </div>
@@ -48,28 +59,25 @@
 
 @code
 {
-    private bool isError = true;
-    private string rePassword ="";
-    private EditContext editContext;
-    private Users user =new(){Type=UsersType.Anim};
-
-    protected override void OnInitialized()
-    {
-        editContext = new EditContext(user);
-        editContext.OnFieldChanged += HandleFieldChanged;
+    private bool isError {get
+                    {
+                    return rePassword != user.Password;
+                    }
     }
-    private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
-    {
-        isError = !editContext.Validate();
-        StateHasChanged();
-    }
-    public void Dispose()
-    {
-        editContext.OnFieldChanged -= HandleFieldChanged;
-    }
+    private string? rePassword {get;set;}
+    private UsersTemp user =new(){Type=UsersType.Anim};
 
     async Task PlaceOrder()
     {
+        if(user.Type == UsersType.SuperAdmin)
+        {
+            await IJSRuntime.InvokeVoidAsync("alert","注册失败！该用户类型不可注册");
+            return;
+        }
+        if(isError)
+        {
+            return;
+        }
         var response=await HttpClient.PostAsJsonAsync(NavigationManager.BaseUri+"admin/register",user);
         var ok = await response.Content.ReadFromJsonAsync<bool>();
         if(!ok)

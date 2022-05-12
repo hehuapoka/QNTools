@@ -1,0 +1,49 @@
+@inject ProtectedSessionStorage ProtectedSessionStorage
+@inject NavigationManager NavigationManager
+<div class="dropdown">
+    @if(userLoginState == null)
+    {
+        <img src="Logos/qnlogo.png" class="user_logo"/>
+        <div class="dropdown-content">
+            <a href="/user/login"><span class="icon-logout"></span>  登录</a>
+            <br>
+            <a href="/user/register"><span class="icon-plus"></span>  注册</a>
+        </div>
+    }
+    else
+    {
+        <img src="@(userLoginState.Image??"Logos/qnlogo.png")" class="user_logo"/>
+        <div class="dropdown-content">
+            <a href="/user/infomation"><span class="icon-cog-alt"></span>  设置</a>
+            <br>
+            <a href="#" onclick="@(()=> logOut())"><span class="icon-user-times"></span>  退出</a>
+        </div>
+
+    }
+    
+</div>
+
+
+@code
+{
+    private UserLoginState? userLoginState;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            var a=await ProtectedSessionStorage.GetAsync<UserLoginState>("UserState");
+            if(a.Success)
+            {
+                userLoginState=a.Value;
+            } 
+            StateHasChanged();
+        }
+        
+    }
+    private async void logOut()
+    {
+        await ProtectedSessionStorage.DeleteAsync("UserState");
+        NavigationManager.NavigateTo("");
+    }
+}
+

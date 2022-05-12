@@ -1,0 +1,55 @@
+@using QNWebServer.Data
+@inject HttpClient HttpClient
+@inject IJSRuntime IJSRuntime
+@inject ProtectedSessionStorage ProtectedSessionStorage
+@inject NavigationManager NavigationManager
+<div class="newprojectview_main">
+    <div class="newprojectview_mid">
+    <h4 style="left:0;right:0;margin-left:25%">创建新项目</h4>
+    <p @onclick="closeWin" class="newproject_x"><span class="oi oi-x"></span></p>
+    <EditForm Model=proj OnValidSubmit=Submit class="newprojectview_form">
+        <DataAnnotationsValidator/>
+        <div><div>项目名称</div><InputText style="width: 100%;" @bind-Value="proj.Name"/></div>
+        <ValidationMessage For="@(() => proj.Name)"/>
+        <div><div>项目图片</div><InputText style="width: 100%;" @bind-Value="proj.Image"/></div>
+        <div class="newprojectview_description_main">
+            <div>项目描述</div>
+            <textarea @bind="proj.Description" class="newprojectview_description"></textarea>
+        </div>
+        <button type="submit"  class="newprojectview_submit">提交</button>
+    </EditForm>
+    </div>
+</div>
+
+@code
+{
+    [Parameter] public NewProject proj {get;set;}
+    [Parameter] public EventCallback closeWin {get;set;}
+
+    async void Submit()
+    {
+        //await IJSRuntime.InvokeVoidAsync("alert","hello");
+        var a=await ProtectedSessionStorage.GetAsync<UserLoginState>("UserState");
+        if(!a.Success || a.Value == null)
+        {
+            await IJSRuntime.InvokeVoidAsync("alert","提交失败，请先登录！");
+            return;
+        }
+        if(a.Value.Type == UsersType.Admin || a.Value.Type == UsersType.SuperAdmin || a.Value.Type == UsersType.Product)
+        {
+            var response=await HttpClient.PostAsJsonAsync(NavigationManager.BaseUri+"admin/project/new",proj);
+            bool state=await response.Content.ReadFromJsonAsync<bool>();
+            if(!state)
+            {
+                await IJSRuntime.InvokeVoidAsync("alert","提交失败，可能是项目已存在！");
+                return;
+            }
+            await closeWin.InvokeAsync();
+        }
+        else
+        {
+            await IJSRuntime.InvokeVoidAsync("alert","提交失败，你没有权限！");
+        }
+        
+    }
+}

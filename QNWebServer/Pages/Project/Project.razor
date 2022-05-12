@@ -1,0 +1,69 @@
+@page "/project/{ProjectName}"
+@using QNWebServer.Data
+@inject HttpClient HttpClient
+@inject ProtectedSessionStorage ProtectedSessionStorage
+@inject NavigationManager NavigationManager
+@inject IJSRuntime IJSRuntime
+@inject NewProject NewProject
+
+<h1>@ProjectName.ToUpper()</h1>
+<hr/>
+@if(project_single != null)
+{
+    <p>工程描述:@(project_single.Description??"没有描述")</p>
+    <div class="project_card" @onclick="@(() => NavigationManager.NavigateTo($"/project/{project_single.Name}/assets"))">
+        <h5><span class=" icon-database"></span>资产</h5>
+    </div>
+    <div class="project_card" @onclick="@(() => NavigationManager.NavigateTo($"/project/{project_single.Name}/shots"))">
+        <h5><span class="icon-videocam"></span>镜头</h5>
+    </div>
+
+    <a @onclick="@(() => RemoveProject(ProjectName))" class="project_remove">删除工程</a>
+}
+else
+{
+    <p>Sorry!工程不存在</p>
+}
+
+ @code
+ {
+     [Parameter]
+     public string ProjectName {get;set;}
+     public QNWebServer.Data.Project? project_single;
+
+     protected override async Task OnInitializedAsync()
+    {
+        project_single=await HttpClient.GetFromJsonAsync<QNWebServer.Data.Project>(NavigationManager.BaseUri + $"admin/project/{ProjectName}");
+    }
+
+
+    async void RemoveProject(string projN)
+    {
+        //await IJSRuntime.InvokeVoidAsync("alert","hello");
+        var a=await ProtectedSessionStorage.GetAsync<UserLoginState>("UserState");
+        if(!a.Success || a.Value == null)
+        {
+            await IJSRuntime.InvokeVoidAsync("alert","提交失败，请先登录！");
+            NavigationManager.NavigateTo("/user/login");
+            return;
+        }
+        if(a.Value.Type == UsersType.Admin || a.Value.Type == UsersType.SuperAdmin || a.Value.Type == UsersType.Product)
+        {
+            var response=await HttpClient.GetFromJsonAsync<bool>(NavigationManager.BaseUri+$"admin/project/remove/{projN}");
+            if(!response)
+            {
+                await IJSRuntime.InvokeVoidAsync("alert","删除失败，项目可能已经不存在！");
+                return;
+            }
+            else
+            {
+                NavigationManager.NavigateTo("/");
+            }
+        }
+        else
+        {
+            await IJSRuntime.InvokeVoidAsync("alert","提交失败，你没有权限！");
+        }
+        
+    }
+ }

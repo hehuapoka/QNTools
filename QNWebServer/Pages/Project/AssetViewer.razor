@@ -1,0 +1,99 @@
+@page "/project/{ProjectName}/assets/{AssetName}"
+@layout ProjectAssetLayout
+@inject HttpClient HttpClient
+@inject ProtectedSessionStorage ProtectedSessionStorage
+@inject IJSRuntime IJSRuntime
+@inject NavigationManager NavigationManager
+@inject NewTask NewTask
+<div class="assetviewer_head">
+    
+    <h1>资产：@(AssetName.ToUpper())<span style="color: #999999;">(@ProjectName)</span></h1>
+    @if(proj != null)
+    {
+        @if(proj.Assets[0].Image != null)
+        {
+            <img src="@proj.Assets[0].Image">
+        }
+        @if(proj != null)
+        {
+            <ul>
+                <li>创建时间: @proj.Assets[0].CreateTime</li>
+                <li>创建用户: @proj.Assets[0].CreateUser</li>
+                <li>任务: @(proj.Assets[0].JobTaskAssets.Count(a => a.Status == Data.TaskStatus.Finished))/@(proj.Assets[0].JobTaskAssets.Count())</li>
+            </ul>
+            @if(@proj.Assets[0].Description != null)
+            {
+                <div class="assetviewer_desc">
+                <span>描述：</span><p>@proj.Assets[0].Description</p>
+                </div>
+            }
+
+        }
+    
+    }
+    <div class="asset_viewer_control">
+        <button @onclick="@(() => NewTask.IsShow=true)"><span class="oi oi-plus"></span> 新任务</button>
+    </div>
+</div>
+<div class="assetviewer_main">
+<AssetTaskTimeLine proj="proj"/>
+</div>
+
+@if(NewTask.IsShow)
+{
+    <NewTaskView newtask="NewTask" closeShow="NewTask.closeShow" submitTask="SumbitTask"/>
+}
+@code
+{
+    [Parameter]
+    public string? ProjectName {get;set;}
+
+    [Parameter]
+    public string? AssetName {get;set;}
+
+    private QNWebServer.Data.Project? proj {get;set;}
+
+    protected override async Task OnInitializedAsync()
+    {
+        NewTask.StartDate = new DateTime(DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day,DateTime.Now.Hour,DateTime.Now.Minute,0);
+        NewTask.EndDate = NewTask.StartDate;
+        @* proj = await HttpClient.GetFromJsonAsync<QNWebServer.Data.Project>(NavigationManager.BaseUri + $"admin/project/assets/{ProjectName}/{AssetName}"); *@
+        await GetTaskList();
+    }
+
+    private async Task GetTaskList()
+    {
+        //assets/tasks/{ProjectName}/{AssetName}
+        proj = await HttpClient.GetFromJsonAsync<QNWebServer.Data.Project>(NavigationManager.BaseUri + $"admin/project/assets/{ProjectName}/{AssetName}");
+    }
+    private async Task SumbitTask()
+    {
+        var us = await UserFunc.IsLogin(ProtectedSessionStorage);
+        if(us == null)
+        {
+            await IJSRuntime.InvokeVoidAsync("alert","你需要登录!");
+            return;
+        }
+        if(us.Type > UsersType.Product)
+        {
+            await IJSRuntime.InvokeVoidAsync("alert","你没有权限创建任务!");
+            return;
+        }
+
+        NewTask.ProjectName = ProjectName??"";
+        NewTask.AssetName = AssetName??"";
+        NewTask.CreateUser = us.Name;
+
+
+        @* NewTask.ProjectName = ProjectName??"";
+        NewTask.AssetName = AssetName??"";
+        NewTask.CreateUser = "Admin";  *@
+
+        var response=await HttpClient.PostAsJsonAsync(NavigationManager.BaseUri + "admin/project/assets/tasks/new",NewTask);
+        bool state=await response.Content.ReadFromJsonAsync<bool>();
+        NewTask.IsShow= false;
+        await GetTaskList();
+
+    }
+}
+

@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 namespace QNWebServer.Admin;
-public class UserConetext:DbContext
+public class UserContext:DbContext
 {
-    public UserConetext(DbContextOptions options):base(options)
+    public UserContext(DbContextOptions<UserContext> options):base(options)
     {
     }
     public DbSet<Users> Users {get;set;}
+    public DbSet<UsersTemp> UsersTemp {get;set;}
 }

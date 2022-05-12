@@ -1,0 +1,54 @@
+.usermanger_ul
+{
+
+}
+.usermanger_ul > li
+{
+    list-style: none;
+    background-color: rgb(69, 158, 209);
+    height: 5rem;
+    margin: 0.5rem;
+    transition: 0.1s;
+}
+.usermanger_ul > li:hover
+{
+    transform: scale(1.01);
+}
+
+.usermanger_ul > li > button
+{
+    position: relative;
+    border-style: none;
+    background-color: #00000000;
+    font-size: 1.5rem;
+    float: right;
+    top: 1rem;
+    color: rgb(0, 139, 182);
+}
+
+.usermanger_ul > li > button:hover
+{
+    color: red;
+}
+.usermanger_box_img
+{
+    position: relative;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    top: 0.5rem;
+    left: 0.5rem;
+    background-color: aliceblue;
+    display: inline-block;
+    background-repeat: round;
+}
+.usermanger_box_item
+{
+    display: inline-block;
+    position: relative;
+    left: 2rem;
+    font-size: small;
+    top: 0.1rem;
+    width: 12%;
+    color: rgb(51, 51, 51);
+}

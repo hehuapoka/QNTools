@@ -1,0 +1,47 @@
+<div class="task_line_main">
+    <div class="timeline">
+        @for (int i = 0; i < 100; i++)
+        {
+            <p style="left: @(i)%;">|</p>
+        }
+    </div>
+    @if(proj != null)
+    {
+        <ul>
+            @foreach (var item in proj.Assets[0].JobTaskAssets)
+            {
+                <li class="attl_item" style="width: @(MyLength(item.StartDate,item.EndDate))%; left:@(MyPos(item.StartDate))%"><span>@item.Name</span></li>
+            }
+        </ul>
+    }
+</div>
+
+@code
+{
+    [Parameter]
+    public QNWebServer.Data.Project? proj {get;set;}
+
+    [Parameter]
+    public DateTime MinDate {get;set;} = new(2022,5,8);
+    public DateTime MaxData {get;set;} = new(2022,5,24);
+
+    public double MaxUnit {get
+                        {
+                            if(MinDate > MaxData) return 0;
+                            return (MaxData-MinDate).TotalMinutes;
+                        }
+                        }
+    
+    private double MyLength(DateTime a, DateTime b)
+    {
+        if(a>=b) return 0.3;
+        return (((b-a).TotalMinutes / (double)MaxUnit) * 100);
+    }
+
+    private double MyPos(DateTime a)
+    {
+        if(a < MinDate) return 0;
+        if( a > MaxData) return 100;
+        return ((a-MinDate).TotalMinutes / MaxUnit)*100;
+    }
+}

@@ -1,0 +1,98 @@
+@using QNWebServer.Data
+@inject NavigationManager NavigationManager
+@inject IJSRuntime IJSRuntime
+@inject ProtectedSessionStorage ProtectedSessionStorage
+@inject HttpClient HttpClient
+
+<div class="newtask_box">
+    <div class="newtask_main">
+        <div class="newtask_head">
+            <h4>新键任务</h4>
+            <button class="newtask_close" @onclick="closeShow">
+                <span class="oi oi-x"></span>
+            </button>
+        </div>
+        <div class="newtask_data">
+            <EditForm Model=newtask OnValidSubmit="submitTask">
+                <DataAnnotationsValidator/>
+                <div class="newtask_item">
+                    <label>任务名称:</label>
+                    <InputText @bind-Value="newtask.Name" style="position: relative;left: 40px;top: 0;width:70%"/>
+                    <ValidationMessage For="@(()=>newtask.Name)"/>
+                </div>
+
+                <div class="newtask_item">
+                    <label>任务执行:</label>
+                    <InputText @bind-Value="newtask.Worker" style="position: relative;left: 40px;top: 0;width:70%"/>
+                    <ValidationMessage For="@(()=>newtask.Worker)"/>
+                </div>
+
+                <div class="newtask_item">
+                    <label>任务检查:</label>
+                    <InputText @bind-Value="newtask.Reviewer" style="position: relative;left: 40px;top: 0;width:70%"/>
+                    <ValidationMessage For="@(()=>newtask.Reviewer)"/>
+                </div>
+
+                <div class="newtask_item">
+                    <label>开始时间:</label>
+                    <InputDate  @bind-Value="newtask.StartDate" style="position: relative;left: 40px;top: 0;width:40%"/>
+                    <input type="time" @bind="newtask.StartDate" style="position: relative;left: 40px;;"/>
+                    <ValidationMessage For="@(()=>newtask.StartDate)"/>
+                </div>
+
+                <div class="newtask_item">
+                    <label>结束时间:</label>
+                    <InputDate  @bind-Value="newtask.EndDate" style="position: relative;left: 40px;top: 0;width:40%"/>
+                    <input type="time" @bind="newtask.EndDate" style="position: relative;left: 40px;"/>
+                    <ValidationMessage For="@(()=>newtask.EndDate)"/>
+                </div>
+
+                <div class="newtask_item">
+                    <label>任务状态:</label>
+                    <InputSelect @bind-Value="newtask.Status" style="position: relative;left: 40px;top: 0;width:70%">
+                        @foreach (var item in Enum.GetValues(typeof(QNWebServer.Data.TaskStatus)))
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(()=>newtask.Status)"/>
+                </div>
+
+                <div class="newtask_item">
+                    <label>任务类型:</label>
+                    <InputSelect @bind-Value="newtask.Type" style="position: relative;left: 40px;top: 0;width:70%">
+                        @foreach (var item in Enum.GetValues(typeof(QNWebServer.Data.TaskType)))
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(()=>newtask.Type)"/>
+                </div>
+
+                <div class="newtask_item">
+                    <label>描述:</label>
+                    <br>
+                    <InputTextArea @bind-Value="newtask.Description" style="position: relative;left: 115px;top: 0;width:70%;height: 10rem"/>
+                    <ValidationMessage For="@(()=>newtask.Description)"/>
+                </div>
+
+                <div class="newtask_item">
+                    <button type="submit">提交</button>
+                </div>
+            </EditForm>
+        </div>
+        
+        
+
+    </div>
+</div>
+
+@code
+{
+    [Parameter]
+    public NewTask newtask {get;set;}
+    [Parameter]
+    public EventCallback closeShow {get;set;}
+    [Parameter]
+    public EventCallback submitTask {get;set;}
+}

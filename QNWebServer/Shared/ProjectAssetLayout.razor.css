@@ -1,0 +1,23 @@
+.projectassetlayout_main
+{
+    width: 100%;
+    padding-bottom: 3rem;
+    background-color: darkgray;
+}
+.projectassetlayout_left
+{
+    position: relative;
+    float: left;
+    font-size: 1rem;
+    width: 5rem;
+    height: 3rem;
+    text-align: center;
+}
+.projectassetlayout_right
+{
+    float: right;
+    background-color: rgb(73, 60, 60);
+    font-size: 1rem;
+    width: 5rem;
+    height: 3rem;
+}
