@@ -65,3 +65,30 @@
     border: none;
     margin-top: 2rem;
 }
+
+
+.newtask_item_c
+{
+    margin-top: 1rem;
+}
+.newtask_item_c > label
+{
+    position: relative;
+    right: -40px;
+}
+
+.input_worker_user
+{
+    display: none;
+    position: absolute;
+    left: 17%;
+    width: 13rem;
+    height: 10rem;
+    overflow-y: scroll;
+    z-index: 3000;
+}
+
+.newtask_item_c:hover .input_worker_user
+{
+    display: block;
+}

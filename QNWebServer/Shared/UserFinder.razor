@@ -1,0 +1,31 @@
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+<div class="main_box">
+    @if(users != null)
+    {
+        @foreach (var item in users)
+        {
+            <div class="user_item" @onclick="@(() => caller.InvokeAsync(item.Name))">
+                <p style="display: inline;">@item.DisplayName / @item.Name</p>
+            </div>
+        }
+    }
+    else
+    {
+        <p>没用任何用户</p>
+    }
+    
+</div>
+
+@code
+{
+    [Parameter]
+    public EventCallback<string> caller {get;set;}
+    [Parameter]
+    public List<UsersLabel>? users {get;set;}
+    protected override async Task OnInitializedAsync()
+    {
+        users = await HttpClient.GetFromJsonAsync<List<UsersLabel>>(NavigationManager.BaseUri+"admin/users/all");
+    }
+}
+

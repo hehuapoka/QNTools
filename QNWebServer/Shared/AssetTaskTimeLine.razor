@@ -1,3 +1,5 @@
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
 <div class="task_line_main">
     <div class="timeline">
         @for (int i = 0; i < 100; i++)
@@ -5,12 +7,26 @@
             <p style="left: @(i)%;">|</p>
         }
     </div>
+    <div class="timeline_edit">
+        <input type="date" @bind="MinDate" />
+        <input type="date" @bind="MaxData" />
+    </div>
+
+    <div class="timeline_edit2">
+        <p><span style="background-color: rgb(@TaskColor.Define[0].R,@TaskColor.Define[0].G,@TaskColor.Define[0].B); color:#00000000;">XX</span>未开始</p>
+        <p><span style="background-color: rgb(@TaskColor.Define[1].R,@TaskColor.Define[1].G,@TaskColor.Define[1].B); color:#00000000;">XX</span>进行中</p>
+        <p><span style="background-color: rgb(@TaskColor.Define[2].R,@TaskColor.Define[2].G,@TaskColor.Define[2].B); color:#00000000;">XX</span>修改中</p>
+        <p><span style="background-color: rgb(@TaskColor.Define[3].R,@TaskColor.Define[3].G,@TaskColor.Define[3].B); color:#00000000;">XX</span>完成</p>
+    </div>
+    <br>
     @if(proj != null)
     {
         <ul>
             @foreach (var item in proj.Assets[0].JobTaskAssets)
             {
-                <li class="attl_item" style="width: @(MyLength(item.StartDate,item.EndDate))%; left:@(MyPos(item.StartDate))%"><span>@item.Name</span></li>
+                <li class="attl_item" @ondblclick="@(() => ToTask(item.JobTaskAssetId))" style="width: @(MyLength(item.StartDate,item.EndDate))%; left:@(MyPos(item.StartDate))%;background-color: rgb(@TaskColor.Define[(int)(item.Status)].R,@TaskColor.Define[(int)(item.Status)].G,@TaskColor.Define[(int)(item.Status)].B);">
+                    <span>@item.Name</span>
+                </li>
             }
         </ul>
     }
@@ -22,8 +38,9 @@
     public QNWebServer.Data.Project? proj {get;set;}
 
     [Parameter]
-    public DateTime MinDate {get;set;} = new(2022,5,8);
-    public DateTime MaxData {get;set;} = new(2022,5,24);
+    public DateTime MinDate {get;set;}
+    [Parameter]
+    public DateTime MaxData {get;set;}
 
     public double MaxUnit {get
                         {
@@ -31,6 +48,14 @@
                             return (MaxData-MinDate).TotalMinutes;
                         }
                         }
+    
+
+    protected override void OnInitialized()
+    {
+        TimeSpan a = new(15,0,0,0);
+        MinDate = DateTime.Now - a;
+        MaxData = DateTime.Now + a;
+    }
     
     private double MyLength(DateTime a, DateTime b)
     {
@@ -44,4 +69,15 @@
         if( a > MaxData) return 100;
         return ((a-MinDate).TotalMinutes / MaxUnit)*100;
     }
+
+    private async void ToTask(int id)
+    {
+        if(proj == null) return;
+        if(proj.Assets == null) return;
+        await Task.Delay(0);  
+        NavigationManager.NavigateTo(NavigationManager.BaseUri + $"project/{proj.Name}/{proj.Assets[0].Name}/{id}");
+        
+    }
 }
+
+

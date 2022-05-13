@@ -3,6 +3,22 @@ namespace QNWebServer.Data;
 public enum AssetType {CHR=0,PROP,ELEM,SET}
 public enum TaskStatus {Define=0,Start,Modify,Finished}
 public enum TaskType {Arts=0,Painter,Storyboard,Asset,Layout,Anim,CFX,VFX,Development,Light,Comp,Cuter,Colorer}
+
+public class Color
+{
+    public int R {get;set;}
+    public int G {get;set;}
+    public int B {get;set;}
+}
+public static class TaskColor
+{
+    public static Color[] Define = {
+                                        new Color {R=100,G=100,B=100},
+                                        new Color {R=255,G=0,B=0},
+                                        new Color {R=255,G=255,B=0},
+                                        new Color {R=0,G=70,B=160}
+                                    };
+}
 public class Project
 {
     [Key]

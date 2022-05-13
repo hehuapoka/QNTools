@@ -15,10 +15,10 @@ public class UserController:Controller
         _db = db;
     }
 
-    [HttpGet("all")]
+    [HttpGet("users/all")]
     public async Task<ActionResult<List<UsersLabel>>> GetAllUsers()
     {
-        return await _db.Users.Select(u => new UsersLabel{ Name=u.Name,Type=u.Type}).ToListAsync();
+        return await _db.Users.Select(u => new UsersLabel{ Name=u.Name,Type=u.Type,DisplayName=u.DisplayName}).ToListAsync();
     }
 
     [HttpGet("users/alltemp")]

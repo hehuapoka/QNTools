@@ -6,22 +6,22 @@
 @inject NavigationManager NavigationManager
 
 <h1 class="projectasset_title">@ProjectName.ToUpper()</h1>
- <div class="asset_tools">
-     <button @onclick="@(() => NewAsset.IsShow=true)"><span class="oi oi-plus"></span> 新资产</button>
- </div>
+<div class="asset_tools">
+    <button @onclick="@(() => NewAsset.IsShow=true)"><span class="oi oi-plus"></span> 新资产</button>
+</div>
 
- <div class="asset_layout">
-     <button @onclick="()=>is_grid_style=true"><span class="oi oi-grid-three-up"></span></button>
-     <input type="range" min=50 max=250 @bind="display_height_grid"/>
-     <button @onclick="()=>is_grid_style=false"><span class="oi oi-list"></span></button>
-     <input type="range" min=10 max=150 @bind="display_height"/>
-     <span>
-         <label>角色</label><input type="checkbox" @bind="chr"/>
-          <label>道具</label><input type="checkbox" @bind="prop"/>
-          <label>元素</label><input type="checkbox" @bind="elem"/>
-          <label>场景</label><input type="checkbox" @bind="sets"/>
-          <input @bind="search_text" placeholder="搜索" />
-     </span>
+<div class="asset_layout">
+    <button @onclick="()=>is_grid_style=true"><span class="oi oi-grid-three-up"></span></button>
+    <input type="range" min=50 max=250 @bind="display_height_grid"/>
+    <button @onclick="()=>is_grid_style=false"><span class="oi oi-list"></span></button>
+    <input type="range" min=10 max=150 @bind="display_height"/>
+    <span>
+        <label>角色</label><input type="checkbox" @bind="chr"/>
+        <label>道具</label><input type="checkbox" @bind="prop"/>
+        <label>元素</label><input type="checkbox" @bind="elem"/>
+        <label>场景</label><input type="checkbox" @bind="sets"/>
+        <input @bind="search_text" placeholder="搜索" />
+    </span>
  </div>
  
 <hr>

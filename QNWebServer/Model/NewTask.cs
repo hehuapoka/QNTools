@@ -27,4 +27,13 @@ public class NewTask
     {
         IsShow = false;
     }
+    public void SetWorker(string a)
+    {
+        Worker =a;
+    }
+
+    public void SetReviewer(string a)
+    {
+        Reviewer =a;
+    }
 }

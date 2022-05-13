@@ -28,3 +28,23 @@
     transform: scale(1.02);
     background-color: rgb(7, 70, 153);
 }
+
+.timeline_edit
+{
+    position: absolute;
+    top: -2rem;
+    left: 0.5rem;
+}
+
+.timeline_edit2
+{
+    position: absolute;
+    top: -4.5rem;
+    right: 2rem;
+}
+
+.timeline_edit2 > p
+{
+    font-size: 0.8rem;
+    margin: -3px;
+}

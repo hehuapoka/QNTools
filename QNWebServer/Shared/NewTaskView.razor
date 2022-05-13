@@ -21,16 +21,22 @@
                     <ValidationMessage For="@(()=>newtask.Name)"/>
                 </div>
 
-                <div class="newtask_item">
+                <div class="newtask_item_c">
                     <label>任务执行:</label>
                     <InputText @bind-Value="newtask.Worker" style="position: relative;left: 40px;top: 0;width:70%"/>
                     <ValidationMessage For="@(()=>newtask.Worker)"/>
+                    <div class="input_worker_user">
+                        <UserFinder caller="newtask.SetWorker"/>
+                    </div>
                 </div>
 
-                <div class="newtask_item">
+                <div class="newtask_item_c">
                     <label>任务检查:</label>
                     <InputText @bind-Value="newtask.Reviewer" style="position: relative;left: 40px;top: 0;width:70%"/>
                     <ValidationMessage For="@(()=>newtask.Reviewer)"/>
+                    <div class="input_worker_user">
+                        <UserFinder caller="newtask.SetReviewer"/>
+                    </div>
                 </div>
 
                 <div class="newtask_item">

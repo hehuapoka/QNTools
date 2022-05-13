@@ -1,0 +1,12 @@
+@page "/project/{projectname}/{assetname}/{taskid:int}"
+
+<p>hello world</p>
+@code
+{
+    [Parameter]
+    public string projectname {get;set;} = "";
+    [Parameter]
+    public string assetname {get;set;} = "";
+    [Parameter]
+    public int taskid {get;set;}
+}
