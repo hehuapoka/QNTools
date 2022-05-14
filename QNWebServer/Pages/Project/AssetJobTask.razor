@@ -1,6 +1,27 @@
 @page "/project/{projectname}/{assetname}/{taskid:int}"
+@inject NavigationManager NavigationManager
+@inject HttpClient HttpClient
+@if(assettask != null)
+{
+    <div>
+        <p>工程名称： @projectname</p>
+        <p>资产名称： @assetname</p>
+        <p>任务名称： @assettask.Name</p>
+        <p>创建人： @assettask.CreateUser</p>
+        <p>创建时间： @assettask.CreateTime</p>
 
-<p>hello world</p>
+        <p>开始时间： @assettask.StartDate</p>
+        <p>结束时间： @assettask.EndDate</p>
+
+        <p>当前状态： @assettask.Status</p>
+        <p>任务类型： @assettask.Type</p>
+
+        <p>制作人员： @assettask.Worker</p>
+        <p>审核人员： @assettask.Reviewer</p>
+
+    </div>
+}
+
 @code
 {
     [Parameter]
@@ -9,4 +30,12 @@
     public string assetname {get;set;} = "";
     [Parameter]
     public int taskid {get;set;}
+
+    private JobTaskAsset? assettask {get;set;}
+
+    protected override async Task OnInitializedAsync()
+    {
+        assettask = await HttpClient.GetFromJsonAsync<JobTaskAsset>(NavigationManager.BaseUri + $"Admin/project/assets/tasks/{taskid}");
+    }
 }
+

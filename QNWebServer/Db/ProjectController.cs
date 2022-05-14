@@ -133,11 +133,31 @@ public class ShotController:Controller
         return true;
     }
 
+    
 
-    // [HttpGet("assets/tasks/{ProjectName}/{AssetName}")]
-    // public async Task<ActionResult<Project?>> GetAssetTask(string ProjectName,string AssetName)
-    // {
-    //     return await _db.Projects.Where(p => p.Name == ProjectName).Include(p => p.Assets.Where(a => a.Name == AssetName).Take(1)).SingleAsync();
-    // }
+
+    [HttpGet("assets/tasks/{taskId:int}")]
+    public async Task<ActionResult<JobTaskAsset?>> GetAssetTask(int taskId)
+    {
+        return await _db.JobTaskAssets.Where(t => t.JobTaskAssetId == taskId).SingleOrDefaultAsync();
+    }
+
+    [HttpGet("assets/tasks/creater/{username}")]
+    public async Task<ActionResult<List<JobTaskAsset>?>> GetMyCreateTask(string username)
+    {
+        return await _db.JobTaskAssets.Where(t => t.CreateUser == username).ToListAsync();
+    }
+
+    [HttpGet("assets/tasks/worker/{username}")]
+    public async Task<ActionResult<List<JobTaskAsset>?>> GetMyWorkerTask(string username)
+    {
+        return await _db.JobTaskAssets.Where(t => t.Worker == username).ToListAsync();
+    }
+
+    [HttpGet("assets/tasks/reviewer/{username}")]
+    public async Task<ActionResult<List<JobTaskAsset>?>> GetMyReviewerTask(string username)
+    {
+        return await _db.JobTaskAssets.Where(t => t.Reviewer == username).ToListAsync();
+    }
 
 }
