@@ -52,3 +52,24 @@
     width: 12%;
     color: rgb(51, 51, 51);
 }
+
+
+.tab_box
+{
+    position: relative;
+}
+
+.tab_box_head
+{
+    position: relative;
+    width: 100%;
+    left: 0;
+    right: 0;
+}
+
+.tab_box_head > button
+{
+    border-style: none;
+    background-color: white;
+}
+

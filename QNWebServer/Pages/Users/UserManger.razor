@@ -1,17 +1,28 @@
 @page "/admin/user/manger"
-@layout UserMangerLayout
 @inject ProtectedSessionStorage session
 @inject NavigationManager NavigationManager
 @inject HttpClient HttpClient
 @inject IJSRuntime IJSRuntime
 @if(us != null)
 {
+    
     @if(us.Type > UsersType.Product)
     {
         <p>你没用权限访问该页面</p>
     }
     else
     {
+        <div class="tab_box">
+            <div class="tab_box_head">
+                <button>用户申请管理</button>
+                <button>用户管理</button>
+
+            </div>
+
+            <div class="tab_box_main">
+                
+            </div>
+        </div>
         @if(usertemp != null)
         {
             <ul class="usermanger_ul">

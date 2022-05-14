@@ -8,9 +8,17 @@
     </div> *@
 
     <main>
-        <div class="top-row px-4">
-            <UserView />
+        <div class="top-row">
+            <div class="Navs">
+                <a href=""><span class="oi oi-home"></span>主页</a>
+                <a href="#news">工程</a>
+                <a href="#contact">任务</a>
+                <div class="UserState">
+                    <UserView />
+                </div>
             </div>
+            
+        </div>
 
         <article class="content px-4">
             @Body

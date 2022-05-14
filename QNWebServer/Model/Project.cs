@@ -12,12 +12,24 @@ public class Color
 }
 public static class TaskColor
 {
-    public static Color[] Define = {
+    public static Color[] ColorLibs = {
                                         new Color {R=100,G=100,B=100},
                                         new Color {R=255,G=0,B=0},
                                         new Color {R=255,G=255,B=0},
                                         new Color {R=0,G=70,B=160}
                                     };
+    public static string Define {get{
+                                    return "#"+TaskColor.ColorLibs[0].R.ToString("x2")+TaskColor.ColorLibs[0].G.ToString("x2")+TaskColor.ColorLibs[0].B.ToString("x2");
+                                }}
+    public static string Start {get{
+                                    return "#"+TaskColor.ColorLibs[1].R.ToString("x2")+TaskColor.ColorLibs[1].G.ToString("x2")+TaskColor.ColorLibs[1].B.ToString("x2");
+                                }}
+    public static string Modify {get{
+                                    return "#"+TaskColor.ColorLibs[2].R.ToString("x2")+TaskColor.ColorLibs[2].G.ToString("x2")+TaskColor.ColorLibs[2].B.ToString("x2");
+                                }}
+    public static string Finished {get{
+                                    return "#"+TaskColor.ColorLibs[3].R.ToString("x2")+TaskColor.ColorLibs[3].G.ToString("x2")+TaskColor.ColorLibs[3].B.ToString("x2");
+                                }}
 }
 public class Project
 {

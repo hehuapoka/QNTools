@@ -1,13 +1,14 @@
 .task_line_main
 {
     width: 100%;
-    overflow: hidden;
+    position: relative;
 }
 .timeline
 {
     background-color: rgb(26, 26, 26);
     width: 100%;
     height: 10px;
+    overflow: hidden;
 }
 .timeline > p
 {
@@ -39,12 +40,13 @@
 .timeline_edit2
 {
     position: absolute;
-    top: -4.5rem;
+    top: -2rem;
     right: 2rem;
 }
 
 .timeline_edit2 > p
 {
     font-size: 0.8rem;
-    margin: -3px;
+    margin: 0.3rem;
+    float: left;
 }

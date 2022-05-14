@@ -97,3 +97,28 @@ main {
     margin-right: 0;
     width: 2rem;
 }
+
+.top-row > a
+{
+    float: left;
+}
+
+
+.Navs
+{
+    position:absolute;
+    width: 100%;
+    padding-left: 1rem;
+    
+}
+
+.Navs > p
+{
+    float: left;
+}
+
+.UserState
+{
+    position: relative;
+    float: right;
+}

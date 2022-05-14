@@ -36,7 +36,10 @@
     </div>
 </div>
 <div class="assetviewer_main">
-<AssetTaskTimeLine proj="proj"/>
+    @if(proj != null)
+    {
+        <AssetTaskTimeLine AssetTasks="proj.Assets[0].JobTaskAssets"/>
+    }
 </div>
 
 @if(NewTask.IsShow)

@@ -4,37 +4,57 @@
 @inject NavigationManager NavigationManager
 @if(loginState != null)
 {
-    <div>
+    <div class="box_main">
+        <div class="box_mid">
+            <br>
         @if(loginState.Type <= UsersType.Product)
         {
             @if(MyCreates == null)
             {
-                <p>我创建的任务 0</p>
+                <p>我创建的任务</p>
+                <br>
             }
             else
             {
-                <p>我创建的任务 @MyCreates.Count</p>
+                <p>我创建的任务</p>
+                <br>
+                <AssetTaskTimeLine AssetTasks="MyCreates"/>
             }
             
         }
+        </div>
 
+        <div class="box_mid">
         @if(MyWorker == null)
         {
-            <p>我的制作任务 0</p>
+            <p>我的制作任务</p>
+            <br>
         }
         else
         {
-            <p>我的制作任务 @MyWorker.Count</p>
+            <p>我的制作任务</p>
+            <br>
+            <AssetTaskTimeLine AssetTasks="MyWorker"/>
         }
+        </div>
 
+        <div class="box_mid">
         @if(MyReViewer == null)
         {
-            <p>我的审核任务 0</p>
+            <p>我的审核任务</p>
+            <br>
         }
         else
         {
-            <p>我的审核任务 @MyReViewer.Count</p>
+            <p>我的审核任务</p>
+            <br>
+            <AssetTaskTimeLine AssetTasks="MyReViewer"/>
         }
+        <br>
+        </div>
+        <br>
+        <br>
+        <br>
 
     </div>
 }

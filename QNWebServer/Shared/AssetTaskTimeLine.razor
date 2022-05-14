@@ -1,41 +1,43 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 <div class="task_line_main">
-    <div class="timeline">
-        @for (int i = 0; i < 100; i++)
-        {
-            <p style="left: @(i)%;">|</p>
-        }
-    </div>
     <div class="timeline_edit">
         <input type="date" @bind="MinDate" />
         <input type="date" @bind="MaxData" />
     </div>
 
     <div class="timeline_edit2">
-        <p><span style="background-color: rgb(@TaskColor.Define[0].R,@TaskColor.Define[0].G,@TaskColor.Define[0].B); color:#00000000;">XX</span>未开始</p>
-        <p><span style="background-color: rgb(@TaskColor.Define[1].R,@TaskColor.Define[1].G,@TaskColor.Define[1].B); color:#00000000;">XX</span>进行中</p>
-        <p><span style="background-color: rgb(@TaskColor.Define[2].R,@TaskColor.Define[2].G,@TaskColor.Define[2].B); color:#00000000;">XX</span>修改中</p>
-        <p><span style="background-color: rgb(@TaskColor.Define[3].R,@TaskColor.Define[3].G,@TaskColor.Define[3].B); color:#00000000;">XX</span>完成</p>
+        <p><span class="oi oi-media-stop" style="color: @TaskColor.Define;"></span>@(AssetTasks.Count(a => a.Status == QNWebServer.Data.TaskStatus.Define))个未开始</p>
+        <p><span class="oi oi-media-stop" style="color: @TaskColor.Start;"></span>@(AssetTasks.Count(a => a.Status == QNWebServer.Data.TaskStatus.Start))个进行中</p>
+        <p><span class="oi oi-media-stop" style="color: @TaskColor.Modify;"></span>@(AssetTasks.Count(a => a.Status == QNWebServer.Data.TaskStatus.Modify))个修改中</p>
+        <p><span class="oi oi-media-stop" style="color: @TaskColor.Finished;"></span>@(AssetTasks.Count(a => a.Status == QNWebServer.Data.TaskStatus.Finished))个完成</p>
+    </div>
+    <div class="timeline">
+        @for (int i = 0; i < 100; i++)
+        {
+            <p style="left: @(i)%;">|</p>
+        }
     </div>
     <br>
-    @if(proj != null)
+    <div>
+    @if(AssetTasks != null)
     {
         <ul>
-            @foreach (var item in proj.Assets[0].JobTaskAssets)
+            @foreach (var item in AssetTasks)
             {
-                <li class="attl_item" @ondblclick="@(() => ToTask(item.JobTaskAssetId))" style="width: @(MyLength(item.StartDate,item.EndDate))%; left:@(MyPos(item.StartDate))%;background-color: rgb(@TaskColor.Define[(int)(item.Status)].R,@TaskColor.Define[(int)(item.Status)].G,@TaskColor.Define[(int)(item.Status)].B);">
+                <li class="attl_item" @ondblclick="@(() => ToTask(item.JobTaskAssetId))" style="width: @(MyLength(item.StartDate,item.EndDate))%; left:@(MyPos(item.StartDate))%;background-color: rgb(@TaskColor.ColorLibs[(int)(item.Status)].R,@TaskColor.ColorLibs[(int)(item.Status)].G,@TaskColor.ColorLibs[(int)(item.Status)].B);">
                     <span>@item.Name</span>
                 </li>
             }
         </ul>
     }
+    </div>
 </div>
 
 @code
 {
     [Parameter]
-    public QNWebServer.Data.Project? proj {get;set;}
+    public List<JobTaskAsset>? AssetTasks {get;set;}
 
     [Parameter]
     public DateTime MinDate {get;set;}
@@ -72,10 +74,8 @@
 
     private async void ToTask(int id)
     {
-        if(proj == null) return;
-        if(proj.Assets == null) return;
         await Task.Delay(0);  
-        NavigationManager.NavigateTo(NavigationManager.BaseUri + $"project/{proj.Name}/{proj.Assets[0].Name}/{id}");
+        NavigationManager.NavigateTo(NavigationManager.BaseUri + $"project/tasks/{id}");
         
     }
 }

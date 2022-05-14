@@ -1,11 +1,10 @@
-@page "/project/{projectname}/{assetname}/{taskid:int}"
+@page "/project/tasks/{taskid:int}"
 @inject NavigationManager NavigationManager
 @inject HttpClient HttpClient
 @if(assettask != null)
 {
     <div>
-        <p>工程名称： @projectname</p>
-        <p>资产名称： @assetname</p>
+        
         <p>任务名称： @assettask.Name</p>
         <p>创建人： @assettask.CreateUser</p>
         <p>创建时间： @assettask.CreateTime</p>
@@ -24,10 +23,6 @@
 
 @code
 {
-    [Parameter]
-    public string projectname {get;set;} = "";
-    [Parameter]
-    public string assetname {get;set;} = "";
     [Parameter]
     public int taskid {get;set;}
 

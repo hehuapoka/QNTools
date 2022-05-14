@@ -1,0 +1,17 @@
+.box_main
+{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(71, 71, 71);
+    left: 0;
+    top: 0;
+}
+.box_mid
+{
+    position: relative;
+    margin-top: 3rem;
+    background-color: rgb(139, 148, 165);
+    box-shadow: 0 0 8px rgba(0,0,0,0.8);
+}
+
