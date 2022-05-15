@@ -25,7 +25,7 @@
         <ul>
             @foreach (var item in AssetTasks)
             {
-                <li class="attl_item" @ondblclick="@(() => ToTask(item.JobTaskAssetId))" style="width: @(MyLength(item.StartDate,item.EndDate))%; left:@(MyPos(item.StartDate))%;background-color: rgb(@TaskColor.ColorLibs[(int)(item.Status)].R,@TaskColor.ColorLibs[(int)(item.Status)].G,@TaskColor.ColorLibs[(int)(item.Status)].B);">
+                <li class="attl_item" @ondblclick="@(() => ToTask(item.ProjectTaskId))" style="width: @(MyLength(item.StartDate,item.EndDate))%; left:@(MyPos(item.StartDate))%;background-color: rgb(@TaskColor.ColorLibs[(int)(item.Status)].R,@TaskColor.ColorLibs[(int)(item.Status)].G,@TaskColor.ColorLibs[(int)(item.Status)].B);">
                     <span>@item.Name</span>
                 </li>
             }
@@ -37,7 +37,7 @@
 @code
 {
     [Parameter]
-    public List<JobTaskAsset>? AssetTasks {get;set;}
+    public List<ProjectTask>? AssetTasks {get;set;}
 
     [Parameter]
     public DateTime MinDate {get;set;}

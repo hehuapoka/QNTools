@@ -15,6 +15,8 @@ public class ProjectContext:DbContext
     public DbSet<JobTaskAsset> JobTaskAssets {get;set;}
     public DbSet<JobTaskShot> JobTaskShots {get;set;}
 
+    public DbSet<ProjectTask> ProjectTasks {get;set;}
+
     // protected override void OnModelCreating(ModelBuilder modelBuilder)
     // {
     //     base.OnModelCreating(modelBuilder);

@@ -19,7 +19,6 @@
             <ul>
                 <li>创建时间: @proj.Assets[0].CreateTime</li>
                 <li>创建用户: @proj.Assets[0].CreateUser</li>
-                <li>任务: @(proj.Assets[0].JobTaskAssets.Count(a => a.Status == Data.TaskStatus.Finished))/@(proj.Assets[0].JobTaskAssets.Count())</li>
             </ul>
             @if(@proj.Assets[0].Description != null)
             {
@@ -38,7 +37,7 @@
 <div class="assetviewer_main">
     @if(proj != null)
     {
-        <AssetTaskTimeLine AssetTasks="proj.Assets[0].JobTaskAssets"/>
+        <AssetTaskTimeLine AssetTasks="proj_tasks"/>
     }
 </div>
 
@@ -55,22 +54,26 @@
     public string? AssetName {get;set;}
 
     private QNWebServer.Data.Project? proj {get;set;}
+    private List<QNWebServer.Data.ProjectTask>? proj_tasks {get;set;}
 
     protected override async Task OnInitializedAsync()
     {
         NewTask.StartDate = new DateTime(DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day,DateTime.Now.Hour,DateTime.Now.Minute,0);
         NewTask.EndDate = NewTask.StartDate;
-        @* proj = await HttpClient.GetFromJsonAsync<QNWebServer.Data.Project>(NavigationManager.BaseUri + $"admin/project/assets/{ProjectName}/{AssetName}"); *@
+        proj = await HttpClient.GetFromJsonAsync<QNWebServer.Data.Project>(NavigationManager.BaseUri + $"admin/project/assets/{ProjectName}/{AssetName}");
         await GetTaskList();
     }
 
     private async Task GetTaskList()
     {
+        if(proj == null) return;
         //assets/tasks/{ProjectName}/{AssetName}
-        proj = await HttpClient.GetFromJsonAsync<QNWebServer.Data.Project>(NavigationManager.BaseUri + $"admin/project/assets/{ProjectName}/{AssetName}");
+        //proj = await HttpClient.GetFromJsonAsync<QNWebServer.Data.Project>(NavigationManager.BaseUri + $"admin/project/assets/{ProjectName}/{AssetName}");
+        proj_tasks = await HttpClient.GetFromJsonAsync<List<QNWebServer.Data.ProjectTask>>(NavigationManager.BaseUri + $"admin/project/assets/tasks/all/{proj.Assets[0].AssetId}");
     }
     private async Task SumbitTask()
     {
+        if(proj == null) return;
         var us = await UserFunc.IsLogin(ProtectedSessionStorage);
         if(us == null)
         {
@@ -85,6 +88,8 @@
 
         NewTask.ProjectName = ProjectName??"";
         NewTask.AssetName = AssetName??"";
+        NewTask.AssetId = proj.Assets[0].AssetId;
+        NewTask.ProjectId = proj.ProjectId;
         NewTask.CreateUser = us.Name;
 
 

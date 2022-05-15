@@ -171,3 +171,34 @@ public class JobTaskShot
     public int ShotId {get;set;}
     public Shot Shot {get;set;}
 }
+
+
+public class ProjectTask
+{
+
+    [Key]
+    public int ProjectTaskId {get;set;}
+    [Required]
+    public string Name {get;set;}
+    public string? Description {get;set;}
+    public string? CreateUser {get;set;}
+    public DateTime CreateTime {get;set;}
+    [Required]
+    public string Worker {get;set;}
+    [Required]
+    public string Reviewer {get;set;}
+
+    [Required]
+    public DateTime StartDate {get;set;}
+    [Required]
+    public DateTime EndDate {get;set;}
+
+    public TaskStatus Status {get;set;}
+    public TaskType Type {get;set;}
+
+
+    [Required]
+    public int ShotIndex {get;set;}
+    [Required]
+    public int AssetIndex {get;set;}
+}

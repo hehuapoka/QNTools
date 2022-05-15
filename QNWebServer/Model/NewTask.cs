@@ -6,6 +6,13 @@ public class NewTask
     public string Name {get;set;}
     public string ProjectName {get;set;} = "";
     public string AssetName {get;set;} = "";
+    public string ShotName {get;set;} = "";
+
+    public int ProjectId {get;set;} = 0;
+    public int ShotId {get;set;} = 0;
+    public int AssetId {get;set;} = 0;
+
+    
     public string? Description {get;set;}
     public string? CreateUser {get;set;}
     [Required]

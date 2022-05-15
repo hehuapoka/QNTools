@@ -67,9 +67,9 @@ else
 {
     private UserLoginState? loginState;
 
-    private List<JobTaskAsset>? MyCreates {get;set;}
-    private List<JobTaskAsset>? MyWorker {get;set;}
-    private List<JobTaskAsset>? MyReViewer {get;set;}
+    private List<ProjectTask>? MyCreates {get;set;}
+    private List<ProjectTask>? MyWorker {get;set;}
+    private List<ProjectTask>? MyReViewer {get;set;}
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender)
@@ -78,11 +78,11 @@ else
             if(loginState == null) return;
             if(loginState.Type <= UsersType.Product)
             {
-                MyCreates = await HttpClient.GetFromJsonAsync<List<JobTaskAsset>>(NavigationManager.BaseUri + $"Admin/project/assets/tasks/creater/{loginState.Name}");
+                MyCreates = await HttpClient.GetFromJsonAsync<List<ProjectTask>>(NavigationManager.BaseUri + $"Admin/project/assets/tasks/creater/{loginState.Name}");
             }
 
-            MyWorker = await HttpClient.GetFromJsonAsync<List<JobTaskAsset>>(NavigationManager.BaseUri + $"Admin/project/assets/tasks/worker/{loginState.Name}");
-            MyReViewer = await HttpClient.GetFromJsonAsync<List<JobTaskAsset>>(NavigationManager.BaseUri + $"Admin/project/assets/tasks/reviewer/{loginState.Name}");
+            MyWorker = await HttpClient.GetFromJsonAsync<List<ProjectTask>>(NavigationManager.BaseUri + $"Admin/project/assets/tasks/worker/{loginState.Name}");
+            MyReViewer = await HttpClient.GetFromJsonAsync<List<ProjectTask>>(NavigationManager.BaseUri + $"Admin/project/assets/tasks/reviewer/{loginState.Name}");
         }
         StateHasChanged();
     }

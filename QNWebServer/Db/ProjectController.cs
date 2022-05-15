@@ -46,12 +46,14 @@ public class ShotController:Controller
         
     }
 
+    //获取工程信息
     [HttpGet("{projectName}")]
     public async Task<ActionResult<Project?>> GetProjectInfo(string projectName)
     {
         return await _db.Projects.Where(a => a.Name==projectName).SingleOrDefaultAsync();
     }
 
+    //移除工程
     [HttpGet("remove/{projectName}")]
     public async Task<ActionResult<bool>> GetProjectRemove(string projectName)
     {
@@ -66,6 +68,15 @@ public class ShotController:Controller
 
     }
 
+
+
+
+    //--------------------------------------------------------------------------------------
+
+
+
+
+    //获取工程及资产
     [HttpGet("assets/{projectName}")]
     public async Task<ActionResult<Project?>> GetAllAssets(string projectName)
     {
@@ -73,6 +84,7 @@ public class ShotController:Controller
 
     }
 
+    //创建新资产
     [HttpPost("assets/new")]
     public async Task<ActionResult<bool>> CreateNewAsset(NewAsset newAsset)
     {
@@ -101,21 +113,32 @@ public class ShotController:Controller
         return true;
     }
 
+
+    //获取资产
     [HttpGet("assets/{ProjectName}/{AssetName}")]
     public async Task<ActionResult<Project?>> GetAssetInfo(string ProjectName,string AssetName)
     {
-        return await _db.Projects.Where(p => p.Name == ProjectName).Include(a => a.Assets.Where(b => b.Name == AssetName)).ThenInclude(c => c.JobTaskAssets).FirstOrDefaultAsync();
+        return await _db.Projects.Where(p => p.Name == ProjectName).Include(a => a.Assets.Where(b => b.Name == AssetName)).FirstOrDefaultAsync(); //.ThenInclude(c => c.JobTaskAssets)
+    }
+
+
+    //--------------------------------------------------------------------------------------
+
+
+
+
+    [HttpGet("assets/tasks/all/{AssetId:int}")]
+    public async Task<ActionResult<List<ProjectTask>?>> GetAssetTasks(int AssetId)
+    {
+        return await _db.ProjectTasks.Where(t => t.AssetIndex == AssetId).ToListAsync();
     }
 
     [HttpPost("assets/tasks/new")]
     public async Task<ActionResult<bool>> CreateNewTask(NewTask newtask)
     {
-        var p = await _db.Projects.Where(p => p.Name == newtask.ProjectName).Include(p => p.Assets.Where(a => a.Name == newtask.AssetName)).FirstOrDefaultAsync();
-        if(p == null) return false;
-        if(p.Assets == null) return false;
 
         //Console.WriteLine(JsonSerializer.Serialize(p));
-        var task_a = new JobTaskAsset{
+        var task_a = new ProjectTask{
                         Name = newtask.Name,
                         Description = newtask.Description,
                         CreateUser = newtask.CreateUser,
@@ -126,8 +149,10 @@ public class ShotController:Controller
                         EndDate = newtask.EndDate,
                         Status = newtask.Status,
                         Type = newtask.Type,
+                        AssetIndex = newtask.AssetId,
+                        ShotIndex = newtask.ShotId
                         };
-        p.Assets[0].JobTaskAssets.Add(task_a);
+        await _db.ProjectTasks.AddAsync(task_a);
 
         await _db.SaveChangesAsync();
         return true;
@@ -137,27 +162,27 @@ public class ShotController:Controller
 
 
     [HttpGet("assets/tasks/{taskId:int}")]
-    public async Task<ActionResult<JobTaskAsset?>> GetAssetTask(int taskId)
+    public async Task<ActionResult<ProjectTask?>> GetAssetTask(int taskId)
     {
-        return await _db.JobTaskAssets.Where(t => t.JobTaskAssetId == taskId).SingleOrDefaultAsync();
+        return await _db.ProjectTasks.Where(t => t.ProjectTaskId == taskId).SingleOrDefaultAsync();
     }
 
     [HttpGet("assets/tasks/creater/{username}")]
-    public async Task<ActionResult<List<JobTaskAsset>?>> GetMyCreateTask(string username)
+    public async Task<ActionResult<List<ProjectTask>?>> GetMyCreateTask(string username)
     {
-        return await _db.JobTaskAssets.Where(t => t.CreateUser == username).ToListAsync();
+        return await _db.ProjectTasks.Where(t => t.CreateUser == username).ToListAsync();
     }
 
     [HttpGet("assets/tasks/worker/{username}")]
-    public async Task<ActionResult<List<JobTaskAsset>?>> GetMyWorkerTask(string username)
+    public async Task<ActionResult<List<ProjectTask>?>> GetMyWorkerTask(string username)
     {
-        return await _db.JobTaskAssets.Where(t => t.Worker == username).ToListAsync();
+        return await _db.ProjectTasks.Where(t => t.Worker == username).ToListAsync();
     }
 
     [HttpGet("assets/tasks/reviewer/{username}")]
-    public async Task<ActionResult<List<JobTaskAsset>?>> GetMyReviewerTask(string username)
+    public async Task<ActionResult<List<ProjectTask>?>> GetMyReviewerTask(string username)
     {
-        return await _db.JobTaskAssets.Where(t => t.Reviewer == username).ToListAsync();
+        return await _db.ProjectTasks.Where(t => t.Reviewer == username).ToListAsync();
     }
 
 }

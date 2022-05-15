@@ -26,11 +26,11 @@
     [Parameter]
     public int taskid {get;set;}
 
-    private JobTaskAsset? assettask {get;set;}
+    private ProjectTask? assettask {get;set;}
 
     protected override async Task OnInitializedAsync()
     {
-        assettask = await HttpClient.GetFromJsonAsync<JobTaskAsset>(NavigationManager.BaseUri + $"Admin/project/assets/tasks/{taskid}");
+        assettask = await HttpClient.GetFromJsonAsync<ProjectTask>(NavigationManager.BaseUri + $"Admin/project/assets/tasks/{taskid}");
     }
 }
 
