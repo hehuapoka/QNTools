@@ -1,22 +1,113 @@
 @page "/project/tasks/{taskid:int}"
 @inject NavigationManager NavigationManager
+@inject ProtectedSessionStorage session
 @inject HttpClient HttpClient
+@inject IJSRuntime IJSRuntime
 @if(assettask != null)
 {
     <div>
         
-        <p>任务名称： @assettask.Name</p>
-        <p>创建人： @assettask.CreateUser</p>
-        <p>创建时间： @assettask.CreateTime</p>
+        <h2>任务名称： @assettask.Name</h2>
+        <hr>
+        <div class="task_info">
+            <p>创建人： @assettask.CreateUser</p>
+            <p>创建时间： @assettask.CreateTime</p>
 
-        <p>开始时间： @assettask.StartDate</p>
-        <p>结束时间： @assettask.EndDate</p>
+            <p>开始时间： @assettask.StartDate</p>
+            <p>结束时间： @assettask.EndDate</p>
 
-        <p>当前状态： @assettask.Status</p>
-        <p>任务类型： @assettask.Type</p>
+            @if(UserLogin != null)
+            {
+                @if(UserLogin.Type <= UsersType.Product)
+                {
+                    <div>
+                        <label>当前状态</label>
+                        <select @bind="assettask.Status">
+                            @foreach(var item in Enum.GetValues(typeof(QNWebServer.Data.TaskStatus)))
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                    <label>任务类型</label>
+                        <select @bind="assettask.Type">
+                            @foreach(var item in Enum.GetValues(typeof(QNWebServer.Data.TaskType)))
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </select>
+                    </div>
+                    <li>提交修改: <span class="icon-pencil" @onclick="@(() => UpDateAdmin())"></span></li>
+                    <li>删除资产: <span class="icon-trash-empty" @onclick="@(() => RemoveTask())"></span></li>
+                }
+                else
+                {
+                    <p>当前状态： @assettask.Status</p>
+                    <p>任务类型： @assettask.Type</p>
+                }
+            }
+            else
+            {
+                <p>当前状态： @assettask.Status</p>
+                <p>任务类型： @assettask.Type</p>
+            }
+        </div>
+        <hr>
+        
+        @if(UserLogin != null && assettask.Status != Data.TaskStatus.Define && assettask.Status != Data.TaskStatus.Finished)
+        {
+            <p>制作人员： @assettask.Worker</p>
+            @if(UserLogin.Name == @assettask.Worker && assettask.IsWorker == false)
+            {
+                <div class="wokerdesc">
+                    <textarea class="wokertext" placeholder="这里填写审核人员查看的消息和文件路径" @bind="assettask.WorkerDescription"/>
+                    <button @onclick="@(()=>UpDateWorker())">提交</button>
+                </div>
+            }
+            else
+            {
+                <div class="wokerdesc">
+                    <p class="wokertext">@(assettask.WorkerDescription??"没有任何制作消息")</p>
+                </div>
+            }
 
-        <p>制作人员： @assettask.Worker</p>
-        <p>审核人员： @assettask.Reviewer</p>
+
+
+
+            <p>审核人员： @assettask.Reviewer</p>
+            @if(UserLogin.Name == assettask.Reviewer && assettask.IsReviewer == false && assettask.IsWorker == true)
+            {
+                <div class="wokerdesc">
+                    <textarea class="wokertext" placeholder="这里填写审核中的问题说明" @bind="assettask.ReviewerDescription"/>
+                    <button @onclick="@(() => UpDateReviewer(true))">通过</button><button class="button_nopass" @onclick="@(() => UpDateReviewer(false))">未通过</button>
+                </div>
+            }
+            else
+            {
+                <div class="wokerdesc">
+                    <p class="wokertext">@(assettask.ReviewerDescription??"没有任何审核消息/或者制作人员还未完成！")</p>
+                </div>
+            }
+        }
+        
+        else
+        {
+            <div class="no_login">
+                <p>制作人员： @assettask.Worker</p>
+                <div class="wokerdesc">
+                    <p class="wokertext">@(assettask.WorkerDescription??"没有任何审核消息")</p>
+                </div>
+                <hr>
+
+                <p>审核人员： @assettask.Reviewer</p>
+                <div class="wokerdesc">
+                    <p class="wokertext">@(assettask.ReviewerDescription??"没有任何审核消息")</p>
+                </div>
+            </div>
+        }
+        
+        
 
     </div>
 }
@@ -28,9 +119,110 @@
 
     private ProjectTask? assettask {get;set;}
 
+    private UserLoginState? UserLogin {get;set;}
+
     protected override async Task OnInitializedAsync()
     {
-        assettask = await HttpClient.GetFromJsonAsync<ProjectTask>(NavigationManager.BaseUri + $"Admin/project/assets/tasks/{taskid}");
+        await UpDateTaskInfo();
     }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        UserLogin=await UserFunc.IsLogin(session);
+        StateHasChanged();
+    }
+
+    private async Task UpDateTaskInfo()
+    {
+        assettask = await HttpClient.GetFromJsonAsync<ProjectTask>(NavigationManager.BaseUri + $"Admin/project/assets/tasks/{taskid}");
+        StateHasChanged();
+    }
+
+    private async Task UpDateWorker()
+    {
+        if(assettask == null ) return;
+        if(UserLogin == null) return;
+
+        if(UserLogin.Name != assettask.Worker)
+        {
+            return;
+        }
+        assettask.IsWorker = true;
+        
+        var a= await HttpClient.PostAsJsonAsync(NavigationManager.BaseUri + "Admin/project/assets/tasks/modify",assettask);
+        bool a_mess=await a.Content.ReadFromJsonAsync<bool>();
+        await UpDateTaskInfo();
+        
+    }
+
+    private async Task UpDateReviewer(bool submit)
+    {
+        if(assettask == null ) return;
+        if(UserLogin == null) return;
+
+        if(UserLogin.Name != assettask.Reviewer)
+        {
+            return;
+        }
+
+        if(submit == true)
+        {
+            assettask.IsReviewer = true;
+            assettask.IsWorker = true;
+            assettask.Status = Data.TaskStatus.Finished;
+
+        }
+        else
+        {
+            assettask.IsReviewer = false;
+            assettask.IsWorker = false;
+        }
+
+        var a= await HttpClient.PostAsJsonAsync(NavigationManager.BaseUri + "Admin/project/assets/tasks/modify",assettask);
+        bool a_mess=await a.Content.ReadFromJsonAsync<bool>();
+        await UpDateTaskInfo();
+
+    }
+
+    private async Task RemoveTask()
+    {
+        if(assettask == null ) return;
+        if(UserLogin == null) return;
+        if(UserLogin.Type > UsersType.Product) return;
+
+        var a = await HttpClient.GetFromJsonAsync<bool>(NavigationManager.BaseUri + $"admin/project/assets/tasks/remove/{assettask.ProjectTaskId}");
+        
+        if(!a)
+        {
+            await IJSRuntime.InvokeVoidAsync("alert","不能移除资产");
+            return;
+        }
+            
+        NavigationManager.NavigateTo("/");
+    }
+
+
+    private async Task UpDateAdmin()
+    {
+        if(assettask == null ) return;
+        if(UserLogin == null) return;
+        if(UserLogin.Type > UsersType.Product) return;
+
+        if(assettask.Status != Data.TaskStatus.Finished)
+        {
+            assettask.IsReviewer = false;
+            assettask.IsWorker = false;
+        }
+        
+
+        var a= await HttpClient.PostAsJsonAsync(NavigationManager.BaseUri + "Admin/project/assets/tasks/modify",assettask);
+        bool a_mess=await a.Content.ReadFromJsonAsync<bool>();
+        await UpDateTaskInfo();
+        await IJSRuntime.InvokeVoidAsync("alert","修改完成");
+
+    }
+
 }
+
+
 

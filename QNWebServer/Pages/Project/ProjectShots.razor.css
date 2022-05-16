@@ -1,0 +1,76 @@
+
+.SCSHOT_main
+{
+    position: relative;
+    width: 100%;
+    left: 0;
+    right: 0;
+
+}
+
+.MAIN_INFO
+{
+    position: relative;
+    text-align: right;
+
+}
+
+.MAIN_INFO > h1
+{
+    position: relative;
+    text-align: left;
+
+}
+
+.SC_ADD_MAIN
+{
+    position: absolute;
+    top: 0.5rem;
+    left: 22rem;
+    font-size: 2rem;
+    z-index: 20;
+    color: rgb(110, 110, 110);
+}
+.SC_ADD_MAIN:hover
+{
+    color: aqua;
+    transform: scale(1.02);
+}
+.SC
+{
+    position: relative;
+    width: 99%;
+    left: 0;
+    right: 0;
+}
+
+.SC_head
+{
+    position: relative;
+    background-color: rgb(119, 119, 119);
+    height: 3rem;
+    box-shadow: 0px 3px 3px rgba(0.3,0.3,0.3,0.4);
+}
+.SC_ICON
+{
+    position: absolute;
+    font-size: 2rem;
+    color: bisque;
+    left: 1rem;
+}
+.SC_ADD
+{
+    position: absolute;
+    height: 100%;
+    right: 1rem;
+    top: 1rem;
+
+}
+.SC_body
+{
+    position: relative;
+    background-color: azure;
+    margin-left: 0.5rem;
+    margin-right: 1rem;
+    z-index: -1;
+}

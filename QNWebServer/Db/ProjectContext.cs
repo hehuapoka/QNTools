@@ -12,8 +12,8 @@ public class ProjectContext:DbContext
     public DbSet<Shot> Shots {get;set;}
     public DbSet<Asset> Assets {get;set;}
 
-    public DbSet<JobTaskAsset> JobTaskAssets {get;set;}
-    public DbSet<JobTaskShot> JobTaskShots {get;set;}
+    // public DbSet<JobTaskAsset> JobTaskAssets {get;set;}
+    // public DbSet<JobTaskShot> JobTaskShots {get;set;}
 
     public DbSet<ProjectTask> ProjectTasks {get;set;}
 

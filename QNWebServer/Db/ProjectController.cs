@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using QNWebServer.Data;
-
 namespace QNWebServer.Admin;
 
 
@@ -113,6 +112,24 @@ public class ShotController:Controller
         return true;
     }
 
+    //移除资产及下的任务
+    [HttpGet("assets/remove/{AssetId:int}")]
+    public async Task<ActionResult<bool>> RemoveProjectAsset(int AssetId)
+    {
+        var asset = await _db.Assets.Where(a => a.AssetId == AssetId).SingleOrDefaultAsync();
+        if(asset != null)
+        {
+            _db.Assets.Remove(asset);
+            var tasks = await _db.ProjectTasks.Where(t => t.AssetIndex == asset.AssetId).ToListAsync();
+            if(tasks != null)
+                _db.ProjectTasks.RemoveRange(tasks);
+            
+            await _db.SaveChangesAsync();
+            return true;
+        }
+        return false;
+    }
+
 
     //获取资产
     [HttpGet("assets/{ProjectName}/{AssetName}")]
@@ -126,6 +143,18 @@ public class ShotController:Controller
 
 
 
+
+
+
+
+    //获取工程及场景镜头
+    [HttpGet("assets/{projectName}")]
+    public async Task<ActionResult<Project?>> GetAllShots(string projectName)
+    {
+        return await _db.Projects.Where(a => a.Name == projectName).Include(p => p.Scs).ThenInclude(s => s.Shots).FirstOrDefaultAsync();
+
+    }
+    /////////----------------------------------------------------
 
     [HttpGet("assets/tasks/all/{AssetId:int}")]
     public async Task<ActionResult<List<ProjectTask>?>> GetAssetTasks(int AssetId)
@@ -165,6 +194,32 @@ public class ShotController:Controller
     public async Task<ActionResult<ProjectTask?>> GetAssetTask(int taskId)
     {
         return await _db.ProjectTasks.Where(t => t.ProjectTaskId == taskId).SingleOrDefaultAsync();
+    }
+
+    [HttpPost("assets/tasks/modify")]
+    public async Task<ActionResult<bool>> ModifyTaskAsset(ProjectTask projectTask)
+    {
+        if(projectTask != null)
+            _db.ProjectTasks.Update(projectTask);
+        await _db.SaveChangesAsync();
+        return true;
+    }
+
+    //移除任务
+    [HttpGet("assets/tasks/remove/{TaskId:int}")]
+    public async Task<ActionResult<bool>> RemoveProjectTask(int TaskId)
+    {
+        var tx=await _db.ProjectTasks.Where(t => t.ProjectTaskId == TaskId).SingleOrDefaultAsync();
+        if(tx != null)
+        {
+            // Asset? pn = await _db.Assets.Where(a => a.AssetId == tx.AssetIndex).SingleOrDefaultAsync();
+            _db.ProjectTasks.Remove(tx);
+            await _db.SaveChangesAsync();
+            return true;
+        }
+        
+        return false;
+            
     }
 
     [HttpGet("assets/tasks/creater/{username}")]

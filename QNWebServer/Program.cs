@@ -8,6 +8,17 @@ using QNWebServer.Admin;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+//session
+// builder.Services.AddDistributedMemoryCache();
+
+// builder.Services.AddSession(options =>
+// {
+//     options.IdleTimeout = TimeSpan.FromSeconds(10);
+//     options.Cookie.HttpOnly = true;
+//     options.Cookie.IsEssential = true;
+// });
+
 //db create
 builder.Services.AddHttpClient();
 builder.Services.AddSqlite<UserContext>("Data Source=users.db");
@@ -22,6 +33,8 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddScoped<NewProject>();
 builder.Services.AddScoped<NewAsset>();
 builder.Services.AddScoped<NewTask>();
+builder.Services.AddScoped<NewSC>();
+builder.Services.AddScoped<NewShot>();
 
 var app = builder.Build();
 
@@ -35,6 +48,8 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
+//session
+// app.UseSession();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
@@ -64,5 +79,4 @@ using (var scope = scopeFactory.CreateScope())
         InitServer.InitFileAssetDb(db_d);
     }
 }
-
 app.Run();

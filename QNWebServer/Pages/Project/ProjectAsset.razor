@@ -37,7 +37,7 @@
                         {
                             @if(String.IsNullOrWhiteSpace(search_text))
                             {
-                                <li class="assetlayout_li" style="height:  @(display_height_grid)px;background-image: url(@item.Image);" @ondblclick="@(() => ToInfo(item.Name))">
+                                <li class="assetlayout_li" style="height:  @(display_height_grid)px;background-image: url(@(item.Image??AssetImgDefault));" @ondblclick="@(() => ToInfo(item.Name))">
                                     <p class="assetlayout_li_grid_p">@item.Name</p>
                                 </li>
                             }
@@ -45,7 +45,7 @@
                             {
                                 @if(item.Name.Contains(search_text))
                                 {
-                                    <li class="assetlayout_li" style="height:  @(display_height_grid)px;background-image: url(@item.Image);" @ondblclick="@(() => ToInfo(item.Name))">
+                                    <li class="assetlayout_li" style="height:  @(display_height_grid)px;background-image: url(@(item.Image??AssetImgDefault));" @ondblclick="@(() => ToInfo(item.Name))">
                                         <p class="assetlayout_li_grid_p">@item.Name</p>
                                     </li>
                                 }
@@ -68,7 +68,7 @@
                             @if(String.IsNullOrWhiteSpace(search_text))
                             {
                                 <li class="assetlayout_li" style="height:  @(display_height)px;" @ondblclick="@(() => ToInfo(item.Name))">
-                                    <div class="assetlayout_li_img" style="background-image: url(@item.Image);width: @(display_height)px;height: @(display_height)px"></div>
+                                    <div class="assetlayout_li_img" style="background-image: url(@(item.Image??AssetImgDefault));width: @(display_height)px;height: @(display_height)px"></div>
                                     <div class="assetlayout_li_infos" style="left: @(display_height)px;">
                                         <p class="assetlayout_li_infos_0">名称：@(item.Name) /创建人：@(item.CreateUser)/ @item.CreateTime.ToString("yyyy/MM/dd")</p>
                                     </div>
@@ -79,7 +79,7 @@
                                 @if(item.Name.Contains(search_text))
                                 {
                                     <li class="assetlayout_li" style="height:  @(display_height)px;" @ondblclick="@(() => ToInfo(item.Name))">
-                                        <div class="assetlayout_li_img" style="background-image: url(@item.Image);width: @(display_height)px;height: @(display_height)px"></div>
+                                        <div class="assetlayout_li_img" style="background-image: url(@(item.Image??AssetImgDefault));width: @(display_height)px;height: @(display_height)px"></div>
                                         <div class="assetlayout_li_infos" style="left: @(display_height)px;">
                                             <p class="assetlayout_li_infos_0">名称：@(item.Name) /创建人：@(item.CreateUser)/ @item.CreateTime.ToString("yyyy/MM/dd")</p>
                                         </div>
@@ -120,6 +120,8 @@
     private bool elem = true;
     private bool sets = true;
     private string search_text="";
+
+    private string AssetImgDefault {get{ return $"'{NavigationManager.BaseUri}Images/asset.png'";}}
     protected override async Task OnInitializedAsync()
     {
         NewAsset.Project = ProjectName;

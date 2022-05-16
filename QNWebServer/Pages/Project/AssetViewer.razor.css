@@ -71,3 +71,13 @@
     left: 0;
     top:200px;
 }
+
+.icon-trash-empty:hover
+{
+    background-color: rgb(116, 116, 116);
+    cursor: pointer;
+}
+.icon-trash-empty:active
+{
+    transform: scale(1.1);
+}

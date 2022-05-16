@@ -1,12 +1,65 @@
 @page "/project/{ProjectName}/shots/"
+@inject HttpClient HttpClient
+@inject ProtectedSessionStorage ProtectedSessionStorage
+@inject IJSRuntime IJSRuntime
+@inject NavigationManager NavigationManager
+@inject NewSC NewSC
+@inject NewShot NewShot
 
-<h1>@ProjectName.ToUpper()</h1>
 
-<p>hello world,这是 @ProjectName 的镜头页</p>
+<div class="SCSHOT_main">
+    <div class="MAIN_INFO">
+        <h1>@ProjectName.ToUpper() (@ProjectName)</h1>
+        <div class="SC_ADD_MAIN" @onclick="@(()=>NewSC.IsShow=true)"><span class="oi oi-plus"></span></div>
+    </div>
+    @if(proj != null)
+    {
+        <div class="SC">
+            <div class="SC_head">
+
+                <div class="SC_ICON"><span class="icon-folder"></span></div>
+                <div class="SC_ADD"><span class="oi oi-plus"></span></div>
+
+            </div>
+            @foreach (var sc in proj.Scs)
+            {
+                <div class="SC_body">
+
+                    @foreach (var shot in sc.Shots)
+                    {
+                        <div class="Shot">
+                            <div class="Shot_Info">
+                                <p>fdsfdsf</p>
+                            </div>
+                        </div>
+                    }
+
+                </div>   
+            }
+        </div>
+    }
+    else
+    {
+        <p>你还没有镜头呢请添加镜头和场景</p>
+    }
+    
+</div>
+
+@if(NewSC.IsShow)
+{
+    <NewSCView newsc="NewSC" closeDialog="NewSC.closeDialog" />
+}
 
 @code
 {
     [Parameter]
     public string? ProjectName {get;set;}
 
+    [Parameter]
+    public QNWebServer.Data.Project? proj {get;set;}
+
+    async Task UpDataShots()
+    {
+        proj = await HttpClient.GetFromJsonAsync<Data.Project>(NavigationManager.BaseUri + $"Admin/project/shots/{ProjectName}");
+    }
 }

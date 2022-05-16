@@ -65,7 +65,7 @@ public class Asset
 
     public DateTime CreateTime {get;set;}
 
-    public List<JobTaskAsset> JobTaskAssets {get;set;} = new();
+    // public List<JobTaskAsset> JobTaskAssets {get;set;} = new();
 
     public int ProjectId {get;set;}
     public Project Project {get;set;}
@@ -80,6 +80,8 @@ public class Sc
 
     public string? Description {get;set;}
 
+    public string? Image {get;set;}
+    
     public string? CreateUser {get;set;}
     public DateTime CreateTime {get;set;}
 
@@ -106,7 +108,7 @@ public class Shot
     public int StratFrame {get;set;}
     public int EndFrame {get;set;}
 
-    public List<JobTaskShot> JobTaskShots {get;set;} = new();
+    // public List<JobTaskShot> JobTaskShots {get;set;} = new();
 
 
     public int ScId {get;set;}
@@ -115,62 +117,62 @@ public class Shot
 
 }
 
-public class JobTaskAsset
-{
+// public class JobTaskAsset
+// {
 
-    [Key]
-    public int JobTaskAssetId {get;set;}
-    [Required]
-    public string Name {get;set;}
-    public string? Description {get;set;}
-    public string? CreateUser {get;set;}
-    public DateTime CreateTime {get;set;}
-    [Required]
-    public string Worker {get;set;}
-    [Required]
-    public string Reviewer {get;set;}
+//     [Key]
+//     public int JobTaskAssetId {get;set;}
+//     [Required]
+//     public string Name {get;set;}
+//     public string? Description {get;set;}
+//     public string? CreateUser {get;set;}
+//     public DateTime CreateTime {get;set;}
+//     [Required]
+//     public string Worker {get;set;}
+//     [Required]
+//     public string Reviewer {get;set;}
 
-    [Required]
-    public DateTime StartDate {get;set;}
-    [Required]
-    public DateTime EndDate {get;set;}
+//     [Required]
+//     public DateTime StartDate {get;set;}
+//     [Required]
+//     public DateTime EndDate {get;set;}
 
-    public TaskStatus Status {get;set;}
-    public TaskType Type {get;set;}
+//     public TaskStatus Status {get;set;}
+//     public TaskType Type {get;set;}
 
 
-    public int AssetId {get;set;}
+//     public int AssetId {get;set;}
     
-    public Asset Asset {get;set;}
-}
+//     public Asset Asset {get;set;}
+// }
 
-public class JobTaskShot
-{
+// public class JobTaskShot
+// {
 
-    [Key]
-    public int JobTaskShotId {get;set;}
-    [Required]
-    public string Name {get;set;}
-    public string? Description {get;set;}
-    public string? CreateUser {get;set;}
-    public DateTime CreateTime {get;set;}
-    [Required]
-    public string Worker {get;set;}
-    [Required]
-    public string Reviewer {get;set;}
+//     [Key]
+//     public int JobTaskShotId {get;set;}
+//     [Required]
+//     public string Name {get;set;}
+//     public string? Description {get;set;}
+//     public string? CreateUser {get;set;}
+//     public DateTime CreateTime {get;set;}
+//     [Required]
+//     public string Worker {get;set;}
+//     [Required]
+//     public string Reviewer {get;set;}
 
-    [Required]
-    public DateTime StartDate {get;set;}
-    [Required]
-    public DateTime EndDate {get;set;}
+//     [Required]
+//     public DateTime StartDate {get;set;}
+//     [Required]
+//     public DateTime EndDate {get;set;}
 
-    public TaskStatus Status {get;set;}
-    public TaskType Type {get;set;}
+//     public TaskStatus Status {get;set;}
+//     public TaskType Type {get;set;}
 
 
-    public int ShotId {get;set;}
-    public Shot Shot {get;set;}
-}
+//     public int ShotId {get;set;}
+//     public Shot Shot {get;set;}
+// }
 
 
 public class ProjectTask
@@ -185,8 +187,14 @@ public class ProjectTask
     public DateTime CreateTime {get;set;}
     [Required]
     public string Worker {get;set;}
+
+    public bool IsWorker {get;set;} = false;
+    public string? WorkerDescription {get;set;}
     [Required]
     public string Reviewer {get;set;}
+
+    public bool IsReviewer {get;set;} = false;
+    public string? ReviewerDescription {get;set;}
 
     [Required]
     public DateTime StartDate {get;set;}
@@ -202,3 +210,4 @@ public class ProjectTask
     [Required]
     public int AssetIndex {get;set;}
 }
+

@@ -1,0 +1,68 @@
+h2
+{
+    text-align: center;
+}
+.task_info
+{
+    text-align: center;
+    line-height: 1.5rem;
+}
+.wokerdesc
+{
+    width: 100%;
+}
+
+.wokerdesc > .wokertext
+{
+    width: 100%;
+    height: 10rem;
+}
+
+.wokerdesc > button
+{
+    position: relative;
+    width: 5rem;
+    height: 2rem;
+    border-style: none;
+    margin: auto;
+    left: 48%;
+}
+.button_nopass
+{
+    background-color: brown;
+}
+
+.wokerdesc > button:hover
+{
+    background-color: rgb(0, 102, 255);
+}
+
+.no_login
+{
+    width: 100%;
+    text-align: center;
+}
+.no_login p
+{
+    text-align: center;
+}
+
+.icon-trash-empty:hover
+{
+    background-color: rgb(116, 116, 116);
+    cursor: pointer;
+}
+.icon-trash-empty:active
+{
+    transform: scale(1.1);
+}
+
+.icon-pencil:hover
+{
+    background-color: rgb(116, 116, 116);
+    cursor: pointer;
+}
+.icon-pencil:active
+{
+    transform: scale(1.1);
+}

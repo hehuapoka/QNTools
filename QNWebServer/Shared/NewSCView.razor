@@ -1,0 +1,92 @@
+@using QNWebServer.Data
+@inject NavigationManager NavigationManager
+@inject IJSRuntime IJSRuntime
+@inject ProtectedSessionStorage ProtectedSessionStorage
+@inject HttpClient HttpClient
+<div class="newassetview_main">
+    <div class="newassetview_box">
+        <p>创建新场景</p>
+            <button class="newassetview_close">
+                <span class="oi oi-x"></span>
+            </button>
+        
+        <div class="newassetview_line"></div>
+        <EditForm Model=newsc OnValidSubmit=SubmitTask>
+            <DataAnnotationsValidator/>
+
+            <div class="newasset_input">
+                <p>场景名称:</p>
+                <span class="newasset_input_sencond">
+                    <InputText @bind-Value="newsc.Name" style="background-color:rgb(250,250,250);width:14rem;border-style: none;margin:auto;"/>
+                </span>
+                <span class="newasset_input_three">
+                    <ValidationMessage For="@(()=>newsc.Name)"/>
+                </span>
+            </div>
+            <br>
+            <div class="newasset_input">
+                <p>图片:</p>
+                <span class="newasset_input_sencond">
+                    <InputText @bind-Value="newsc.Image" style="background-color:rgb(250,250,250);width:11.5rem;border-style: none;margin:auto;"/>
+                    <button style="background-color:rgba(0,0,0,0.1);border-style: none;" @onclick="OpenImageView"><span class="icon-folder"></span></button>
+                </span>
+            </div>
+            <br>
+            <div class="newasset_input">
+                <p>场景描述:</p>
+                <br>
+                <span class="newasset_input_sencond">
+                    <InputTextArea @bind-Value="newsc.Description" style="background-color:rgb(250,250,250);width:14rem;height:15rem;border-style: none;margin:auto;"/>
+                </span>
+            </div>
+            <br>
+            <button class="newasset_submit" type="submit">提交</button>
+        </EditForm>
+    </div>
+</div>
+@code
+{
+    [Parameter]
+    public NewSC newsc {get;set;}
+
+    [Parameter]
+    public EventCallback closeDialog {get;set;}
+
+    [Parameter]
+    public EventCallback updateDialog {get;set;}
+
+    async void OpenImageView()
+    {
+        await IJSRuntime.InvokeVoidAsync("open",NavigationManager.BaseUri+"fileassets/ImagesLook","_blank");
+    }
+
+    async void SubmitTask()
+    {
+        UserLoginState? us =await UserFunc.IsLogin(ProtectedSessionStorage);
+        if(us == null)
+        {
+            await IJSRuntime.InvokeVoidAsync("alert","你需要登录!");
+            return;
+        }
+        if(us.Type <= UsersType.Product)
+        {
+            @* newasset.CreateUser =us.Name;
+            newasset.CreateTime = DateTime.Now;
+
+            var response=await HttpClient.PostAsJsonAsync(NavigationManager.BaseUri + "admin/project/assets/new",newasset);
+            bool state=await response.Content.ReadFromJsonAsync<bool>();
+            if(!state)
+            {
+                await IJSRuntime.InvokeVoidAsync("alert","提交失败，可能是资产已存在！");
+                return;
+            }
+            await updateDialog.InvokeAsync(); *@
+        }
+        else
+        {
+            await IJSRuntime.InvokeVoidAsync("alert","你没有权限创建场景!");
+            return;
+        }
+    }
+}
+

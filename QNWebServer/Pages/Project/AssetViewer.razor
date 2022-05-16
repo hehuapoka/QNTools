@@ -19,6 +19,7 @@
             <ul>
                 <li>创建时间: @proj.Assets[0].CreateTime</li>
                 <li>创建用户: @proj.Assets[0].CreateUser</li>
+                <li>删除资产: <span class="icon-trash-empty" @onclick="@(() => RemoveAsset())"></span></li>
             </ul>
             @if(@proj.Assets[0].Description != null)
             {
@@ -101,7 +102,34 @@
         bool state=await response.Content.ReadFromJsonAsync<bool>();
         NewTask.IsShow= false;
         await GetTaskList();
+        StateHasChanged();
 
+    }
+
+    private async Task RemoveAsset()
+    {
+        if(proj == null) return;
+        var us = await UserFunc.IsLogin(ProtectedSessionStorage);
+        if(us == null)
+        {
+            await IJSRuntime.InvokeVoidAsync("alert","你需要登录!");
+            return;
+        }
+        if(us.Type > UsersType.Product)
+        {
+            await IJSRuntime.InvokeVoidAsync("alert","你没有权限删除任务!");
+            return;
+        }
+        //
+        var a = await HttpClient.GetFromJsonAsync<bool>(NavigationManager.BaseUri + $"admin/project/assets/remove/{proj.Assets[0].AssetId}");
+        
+        if(!a)
+        {
+            await IJSRuntime.InvokeVoidAsync("alert","不能移除资产");
+            return;
+        }
+            
+        NavigationManager.NavigateTo(NavigationManager.BaseUri+ $"project/{ProjectName}/assets");
     }
 }
 
